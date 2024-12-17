@@ -13,7 +13,6 @@ const SignUp = () => {
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [form, setForm] = React.useState({
-    name: "",
     email: "",
     password: "",
   });
@@ -93,13 +92,6 @@ const SignUp = () => {
         </View>
         <View className="p-5">
           <InputField
-            label="Nombre"
-            placeholder="Ingrese su nombre..."
-            icon={icons.person}
-            value={form.name}
-            onChangeText={(text) => setForm({ ...form, name: text })}
-          />
-          <InputField
             autoCapitalize="none"
             label="Email"
             placeholder="Ingrese su email..."
@@ -123,11 +115,11 @@ const SignUp = () => {
           />
 
           <Link
-            href={"/sign-in"}
+            href={"/sign-up"}
             className="text-lg text-center text-general-200 mt-10"
           >
-            <Text>Ya tienes una cuenta? </Text>
-            <Text className="text-primary-500">Inicia sesión</Text>
+            <Text>No tienes una cuenta? </Text>
+            <Text className="text-primary-500">Registrate</Text>
           </Link>
         </View>
       </View>
