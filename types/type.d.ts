@@ -97,39 +97,16 @@ declare interface PaymentProps {
   rideTime: number;
 }
 
-declare interface LocationStore {
-  userLatitude: number | null;
-  userLongitude: number | null;
-  userAddress: string | null;
-  destinationLatitude: number | null;
-  destinationLongitude: number | null;
-  destinationAddress: string | null;
-  setUserLocation: ({
-    latitude,
-    longitude,
-    address,
-  }: {
-    latitude: number;
-    longitude: number;
-    address: string;
-  }) => void;
-  setDestinationLocation: ({
-    latitude,
-    longitude,
-    address,
-  }: {
-    latitude: number;
-    longitude: number;
-    address: string;
-  }) => void;
+interface CartProduct {
+  id: string;
+  quantity: number;
 }
 
-declare interface DriverStore {
-  drivers: MarkerData[];
-  selectedDriver: number | null;
-  setSelectedDriver: (driverId: number) => void;
-  setDrivers: (drivers: MarkerData[]) => void;
-  clearSelectedDriver: () => void;
+declare interface CartStore {
+  cart: Record<string, CartProduct>;
+  addProduct: (product: CartProduct) => void;
+  removeProduct: (id: string) => void;
+  clearCart: () => void;
 }
 
 declare interface DriverCardProps {

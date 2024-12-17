@@ -1,8 +1,11 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { icons } from "@/constants";
+import { cartStore } from "@/store/cartStore";
 
 const ProductCard = ({ item }: { item: any }) => {
+  const { addProduct } = cartStore();
+
   return (
     <View className="w-full bg-white mb-4 flex flex-row justify-between gap-4 relative">
       <View className="p-4 flex flex-col max-w-[50%]">
@@ -18,7 +21,9 @@ const ProductCard = ({ item }: { item: any }) => {
         className="w-[150px] h-[100px] rounded-xl"
       />
       <View className="bg-white w-8 h-8 flex items-center justify-center absolute bottom-3 right-3 rounded-full">
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => addProduct({ id: item.id, quantity: 1 })}
+        >
           <Image
             source={icons.checkmark}
             className="h-4 w-4"

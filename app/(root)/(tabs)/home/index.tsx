@@ -14,11 +14,14 @@ import { icons } from "@/constants";
 import { useUser } from "@clerk/clerk-expo";
 import RestaurantsFlatList from "@/components/RestaurantsFlatList";
 import InputField from "@/components/InputField";
+import { cartStore } from "@/store/cartStore";
 
 const Home = () => {
   const { user } = useUser();
   const { restaurantsQuery } = useRestaurants();
   const [isTextHidden, setIsTextHidden] = useState(false);
+
+  const { cart } = cartStore();
 
   const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const currentOffset = e.nativeEvent.contentOffset.y;
@@ -29,17 +32,30 @@ const Home = () => {
   return (
     <SafeAreaView className="bg-general-500 flex-1">
       <View
-        className={`flex flex-row items-start justify-between my-5 px-5 gap-4 ${isTextHidden && "items-center"}`}
+        className={`flex flex-col items-start justify-between my-3 px-5 gap-1`}
       >
-        <View className="flex flex-col flex-1">
-          <Text
-            className={`text-2xl capitalize font-JakartaExtraBold ${isTextHidden && "hidden"}`}
-          >
+        <View
+          className={`flex flex-row justify-between w-full ${isTextHidden && "hidden"}`}
+        >
+          <Text className={`text-2xl capitalize font-JakartaExtraBold`}>
             Bienvenido{", "}
             {user?.firstName ||
               user?.emailAddresses[0].emailAddress.split("@")[0]}{" "}
             👋
           </Text>
+          <TouchableOpacity className="justify-center items-center w-10 h-10 rounded-full bg-white relative">
+            <Image source={icons.star} className="w-4 h-4" tintColor="000" />
+            <View className="w-5 h-5 rounded-full flex items-center justify-center bg-orange-600 absolute bottom-0 -right-2">
+              <Text className="text-sm text-white">
+                {Object.keys(cart).length}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity className="justify-center items-center w-10 h-10 rounded-full bg-white">
+            <Image source={icons.out} className="w-4 h-4" tintColor="#000" />
+          </TouchableOpacity>
+        </View>
+        <View className="w-full">
           <InputField
             icon={icons.search}
             placeholder="Buscar restaurantes"
@@ -48,9 +64,6 @@ const Home = () => {
             onBlur={() => setIsTextHidden(false)}
           />
         </View>
-        <TouchableOpacity className="justify-center items-center w-10 h-10 rounded-full bg-white">
-          <Image source={icons.out} className="w-4 h-4" />
-        </TouchableOpacity>
       </View>
       <ScrollView
         onScroll={handleScroll}

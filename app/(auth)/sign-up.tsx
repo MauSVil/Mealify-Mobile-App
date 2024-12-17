@@ -79,7 +79,7 @@ const SignUp = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <View className="flex-1 bg-white">
       <View className="flex-1 bg-white">
         <View className="relative w-full h-[250px]">
           <Image
@@ -192,7 +192,7 @@ const SignUp = () => {
           />
         </View>
       </ReactNativeModal>
-    </SafeAreaView>
+    </View>
   );
 };
 

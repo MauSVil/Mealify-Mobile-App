@@ -1,6 +1,5 @@
-import { View, Text, Image, TouchableOpacity, Pressable } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import React from "react";
-import { icons } from "@/constants";
 import { router } from "expo-router";
 
 const RestaurantCard = ({ item }: { item: any }) => {
@@ -13,9 +12,14 @@ const RestaurantCard = ({ item }: { item: any }) => {
         source={{ uri: item.heroImage }}
         className="h-[100px] w-full mb-3 rounded-md"
       />
-      <TouchableOpacity className="absolute right-3 top-3 bg-white rounded-full w-8 h-8 flex items-center justify-center">
+      {/* <TouchableOpacity className="absolute right-3 top-3 bg-white rounded-full w-8 h-8 flex items-center justify-center">
         <Image source={icons.star} className="w-4 h-4" tintColor="#000" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+      {item.premium && (
+        <View className="absolute right-3 top-3 bg-blue-700 rounded-full flex items-center justify-center px-2 py-1 shadow-sm shadow-black">
+          <Text className="text-white">Premium</Text>
+        </View>
+      )}
       <View className="flex flex-col">
         <Text>{item.name}</Text>
         <Text className="text-general-200">Costo de envio: MXN15</Text>

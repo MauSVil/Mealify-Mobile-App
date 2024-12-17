@@ -6,6 +6,7 @@ import ProductCard from "@/components/ProductCard";
 
 const products = [
   {
+    id: 1,
     name: "Sarteneta Mexicana",
     description:
       "Incluye salsa norteña, dos tacos de chile relleno, queso panela dorado, y tres doradas de huitlacoche y guacamole.",
@@ -18,6 +19,7 @@ const products = [
     restaurantId: "6721071e367470be50b03190",
   },
   {
+    id: 2,
     name: "Arrachera estilo Toks",
     description:
       "Jugosa y suave Arrachera (200 g) cocinada a la parrilla al estilo Toks, acompañada de papas fritas y chiles toreados.",
@@ -30,6 +32,7 @@ const products = [
     restaurantId: "6721071e367470be50b03190",
   },
   {
+    id: 3,
     name: "Mr. Tam beef",
     description:
       "Cubierta de empanizado, aguacate y tampico, relleno de queso crema, aguacate y filete de res.",
@@ -40,6 +43,7 @@ const products = [
     restaurantId: "6725aefdf11f4e9bb17ffa2e",
   },
   {
+    id: 4,
     name: "Pozole",
     description: "Un rico pozole",
     price: 150,
@@ -51,6 +55,7 @@ const products = [
     restaurantId: "67210f7afbd3a0f9459c9f46",
   },
   {
+    id: 5,
     name: "King de pollo",
     description: "Un king pero de pollo",
     price: 120,
