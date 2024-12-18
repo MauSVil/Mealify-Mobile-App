@@ -15,6 +15,7 @@ import { useUser } from "@clerk/clerk-expo";
 import RestaurantsFlatList from "@/components/RestaurantsFlatList";
 import InputField from "@/components/InputField";
 import { cartStore } from "@/store/cartStore";
+import { router } from "expo-router";
 
 const Home = () => {
   const { user } = useUser();
@@ -43,7 +44,10 @@ const Home = () => {
               user?.emailAddresses[0].emailAddress.split("@")[0]}{" "}
             👋
           </Text>
-          <TouchableOpacity className="justify-center items-center w-10 h-10 rounded-full bg-white relative">
+          <TouchableOpacity
+            className="justify-center items-center w-10 h-10 rounded-full bg-white relative"
+            onPress={() => router.push("/cart")}
+          >
             <Image source={icons.star} className="w-4 h-4" tintColor="000" />
             <View className="w-5 h-5 rounded-full flex items-center justify-center bg-orange-600 absolute bottom-0 -right-2">
               <Text className="text-sm text-white">
@@ -51,18 +55,28 @@ const Home = () => {
               </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity className="justify-center items-center w-10 h-10 rounded-full bg-white">
-            <Image source={icons.out} className="w-4 h-4" tintColor="#000" />
-          </TouchableOpacity>
         </View>
-        <View className="w-full">
+        <View className="w-full flex-row gap-4 items-center justify-between">
           <InputField
             icon={icons.search}
             placeholder="Buscar restaurantes"
-            containerStyle="border-general-100"
+            containerStyle="border-general-100 w-full"
             onFocus={() => setIsTextHidden(true)}
             onBlur={() => setIsTextHidden(false)}
           />
+          {isTextHidden && (
+            <TouchableOpacity
+              className="justify-center items-center w-10 h-10 rounded-full bg-white relative"
+              onPress={() => router.push("/cart")}
+            >
+              <Image source={icons.star} className="w-4 h-4" tintColor="000" />
+              <View className="w-5 h-5 rounded-full flex items-center justify-center bg-orange-600 absolute bottom-0 -right-2">
+                <Text className="text-sm text-white">
+                  {Object.keys(cart).length}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
       <ScrollView

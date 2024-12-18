@@ -55,36 +55,6 @@ const Layout = () => {
           ),
         }}
       />
-      {/* <Tabs.Screen
-        name="rides"
-        options={{
-          title: "Rides",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} source={icons.list} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="chat"
-        options={{
-          title: "Chat",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} source={icons.chat} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Profile",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} source={icons.profile} />
-          ),
-        }}
-      /> */}
     </Tabs>
   );
 };

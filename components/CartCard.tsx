@@ -1,25 +1,35 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
+import { CartProduct } from "@/types/type";
 import { icons } from "@/constants";
 import { cartStore } from "@/store/cartStore";
-import { Product } from "@/types/type";
 
-const ProductCard = ({ item }: { item: Product }) => {
-  const { cart, addProduct, removeProduct } = cartStore();
-
+const CartCard = ({ item }: { item: CartProduct }) => {
+  const { cart, removeProduct, addProduct } = cartStore();
   return (
-    <View className="w-full bg-white mb-4 flex flex-row justify-between gap-4 relative">
-      <View className="p-4 flex flex-col max-w-[50%]">
-        <Text className="text-lg font-JakartaBold" numberOfLines={1}>
-          {item.name}
-        </Text>
-        <Text className="text-base font-Jakarta" numberOfLines={2}>
-          {item.description}
-        </Text>
+    <View className="bg-white min-h-40 rounded-xl mb-4 shadow-black shadow-sm flex flex-row justify-between">
+      <View className="p-4 flex flex-col w-1/2">
+        <Text className="font-JakartaBold text-lg">{item.name}</Text>
+        <View className="flex flex-row gap-1">
+          <Text className="font-JakartaSemiBold text-base text-general-200">
+            Piezas:
+          </Text>
+          <Text className="font-Jakarta text-base text-general-200">
+            {item.quantity}
+          </Text>
+        </View>
+        <View className="flex flex-row gap-1">
+          <Text className="font-JakartaSemiBold text-base text-general-200">
+            Total:
+          </Text>
+          <Text className="font-Jakarta text-base text-general-200">
+            ${item.price * item.quantity}
+          </Text>
+        </View>
       </View>
       <Image
         source={{ uri: item.image }}
-        className="w-[150px] h-[100px] rounded-xl"
+        className="w-1/2 h-full rounded-r-xl"
       />
       {cart[item.id]?.quantity > 0 ? (
         <View className="w-[110px] flex flex-row justify-between absolute bottom-3 right-3">
@@ -64,4 +74,4 @@ const ProductCard = ({ item }: { item: Product }) => {
   );
 };
 
-export default ProductCard;
+export default CartCard;

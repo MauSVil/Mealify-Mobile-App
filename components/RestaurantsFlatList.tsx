@@ -1,6 +1,7 @@
-import { Text, FlatList, View } from "react-native";
+import { Text, FlatList, View, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import RestaurantCard from "./RestaurantCard";
+import { icons } from "@/constants";
 
 const RestaurantsFlatList = ({
   title,
@@ -33,7 +34,12 @@ const RestaurantsFlatList = ({
 
   return (
     <>
-      <Text className="mx-5 font-JakartaBold text-xl mb-4">{title}</Text>
+      <View className="w-full justify-between items-center flex- flex-row mb-4 pr-7">
+        <Text className="mx-5 font-JakartaBold text-xl">{title}</Text>
+        <TouchableOpacity className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+          <Image source={icons.backArrow} className="w-6 h-6 rotate-180" />
+        </TouchableOpacity>
+      </View>
       <FlatList
         horizontal
         data={restaurants}

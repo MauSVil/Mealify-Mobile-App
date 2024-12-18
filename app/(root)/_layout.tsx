@@ -8,6 +8,7 @@ const Layout = () => {
         name="[restaurantId]"
         options={{ headerShown: false, gestureDirection: "vertical" }}
       />
+      <Stack.Screen name="cart" options={{ headerShown: false }} />
     </Stack>
   );
 };

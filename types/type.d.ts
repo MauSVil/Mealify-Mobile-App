@@ -97,8 +97,20 @@ declare interface PaymentProps {
   rideTime: number;
 }
 
-interface CartProduct {
-  id: string;
+declare interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  available: boolean;
+  image: string;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+  deletedAt?: string | null;
+  restaurantId: string;
+}
+
+interface CartProduct extends Product {
   quantity: number;
 }
 
