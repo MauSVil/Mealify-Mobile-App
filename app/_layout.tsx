@@ -7,6 +7,7 @@ import "../global.css";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { tokenCache } from "@/lib/auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "react-native-get-random-values";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 

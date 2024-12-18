@@ -2,6 +2,7 @@ import {
   Image,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  Pressable,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -33,17 +34,16 @@ const Home = () => {
   return (
     <SafeAreaView className="bg-general-500 flex-1">
       <View
-        className={`flex flex-col items-start justify-between my-3 px-5 gap-1`}
+        className={`flex flex-col items-start justify-between my-1 px-5 gap-1`}
       >
         <View
           className={`flex flex-row justify-between w-full ${isTextHidden && "hidden"}`}
         >
-          <Text className={`text-2xl capitalize font-JakartaExtraBold`}>
-            Bienvenido{", "}
-            {user?.firstName ||
-              user?.emailAddresses[0].emailAddress.split("@")[0]}{" "}
-            👋
-          </Text>
+          <Pressable onPress={() => router.push("/(root)/address")}>
+            <Text className={`text-xl capitalize font-JakartaExtraBold`}>
+              Cto Novelistas #24
+            </Text>
+          </Pressable>
           <TouchableOpacity
             className="justify-center items-center w-10 h-10 rounded-full bg-white relative"
             onPress={() => router.push("/cart")}

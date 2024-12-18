@@ -16,7 +16,7 @@ const RestaurantCard = ({ item }: { item: any }) => {
         <Image source={icons.star} className="w-4 h-4" tintColor="#000" />
       </TouchableOpacity> */}
       {item.premium && (
-        <View className="absolute right-3 top-3 bg-blue-700 rounded-full flex items-center justify-center px-2 py-1 shadow-sm shadow-black">
+        <View className="absolute right-3 top-3 bg-blue-700 rounded-full flex items-center justify-center px-2 py-1 shadow-sm shadow-neutral-400/70">
           <Text className="text-white">Premium</Text>
         </View>
       )}

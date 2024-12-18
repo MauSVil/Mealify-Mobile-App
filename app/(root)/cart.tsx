@@ -50,7 +50,10 @@ const Cart = () => {
         renderItem={({ item }) => <CartCard item={item} />}
       />
       <View className="w-10/12 mx-10">
-        <CustomButton title="Comprar" />
+        <CustomButton
+          title="Comprar"
+          disabled={Object.values(cart).length === 0}
+        />
       </View>
     </SafeAreaView>
   );

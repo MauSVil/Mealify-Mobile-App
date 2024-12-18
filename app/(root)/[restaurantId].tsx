@@ -84,7 +84,7 @@ const RestaurantScreen = () => {
         </TouchableOpacity>
       </View>
       <Image
-        className="rounded-full bg-white w-20 h-20 top-36 absolute border-white border-2 shadow-md shadow-black z-10"
+        className="rounded-full bg-white w-20 h-20 top-36 absolute border-white border-2 shadow-md shadow-neutral-400/70 z-10"
         source={{
           uri: "https://minio.mausvil.dev/businesses/67210f7afbd3a0f9459c9f46.jpeg",
         }}

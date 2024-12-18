@@ -7,7 +7,7 @@ import { cartStore } from "@/store/cartStore";
 const CartCard = ({ item }: { item: CartProduct }) => {
   const { cart, removeProduct, addProduct } = cartStore();
   return (
-    <View className="bg-white min-h-40 rounded-xl mb-4 shadow-black shadow-sm flex flex-row justify-between">
+    <View className="bg-white min-h-40 rounded-xl mb-4 shadow-neutral-400/70 shadow-sm flex flex-row justify-between">
       <View className="p-4 flex flex-col w-1/2">
         <Text className="font-JakartaBold text-lg">{item.name}</Text>
         <View className="flex flex-row gap-1">

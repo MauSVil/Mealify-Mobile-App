@@ -2,7 +2,11 @@ import { Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { ButtonProps } from "@/types/type";
 
-const getVariantStyle = (variant: ButtonProps["bgVariant"]) => {
+const getVariantStyle = (
+  variant: ButtonProps["bgVariant"],
+  disabled?: boolean,
+) => {
+  if (disabled) return "bg-gray-400/50";
   switch (variant) {
     case "secondary":
       return "bg-gray-500";
@@ -39,11 +43,13 @@ const CustomButton = ({
   IconLeft,
   IconRight,
   className,
+  disabled,
   ...rest
 }: ButtonProps) => (
   <TouchableOpacity
     onPress={onPress}
-    className={`w-full rounded-full p-3 flex flex-row justify-center items-center shadow-md shadow-neutral-400/70 ${getVariantStyle(bgVariant)} ${className}`}
+    disabled={disabled}
+    className={`w-full rounded-full p-3 flex flex-row justify-center items-center shadow-md shadow-neutral-400/70 ${getVariantStyle(bgVariant, disabled)} ${className}`}
     {...rest}
   >
     {IconLeft && <IconLeft />}
