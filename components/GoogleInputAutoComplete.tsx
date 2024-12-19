@@ -49,6 +49,7 @@ const GoogleTextInput = ({
           },
         }}
         onPress={(data, details = null) => {
+          console.log({ data, details });
           handlePress({
             latitude: details?.geometry.location.lat!,
             longitude: details?.geometry.location.lng!,
@@ -70,7 +71,7 @@ const GoogleTextInput = ({
         )}
         textInputProps={{
           placeholderTextColor: "gray",
-          placeholder: initialLocation ?? "Where do you want to go?",
+          placeholder: initialLocation ?? "Donde te encuentras?",
         }}
       />
     </View>
