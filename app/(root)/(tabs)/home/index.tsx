@@ -8,20 +8,22 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRestaurants } from "./_hooks/useRestaurants";
 import { icons } from "@/constants";
-import { useUser } from "@clerk/clerk-expo";
 import RestaurantsFlatList from "@/components/RestaurantsFlatList";
 import InputField from "@/components/InputField";
 import { cartStore } from "@/store/cartStore";
 import { router } from "expo-router";
+import * as Location from "expo-location";
+import { useLocationStore } from "@/store/locationStore";
 
 const Home = () => {
-  const { user } = useUser();
+  const { setUserLocation, userAddress } = useLocationStore();
   const { restaurantsQuery } = useRestaurants();
   const [isTextHidden, setIsTextHidden] = useState(false);
+  const [hasPermissions, setHasPermissions] = useState(true);
 
   const { cart } = cartStore();
 
@@ -31,6 +33,30 @@ const Home = () => {
     setIsTextHidden(isScrolling);
   };
 
+  useEffect(() => {
+    const requestLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setHasPermissions(false);
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync();
+      const address = await Location.reverseGeocodeAsync({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+
+      setUserLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        address: `${address[0].name}, ${address[0].region}`,
+      });
+    };
+
+    requestLocation();
+  }, []);
+
   return (
     <SafeAreaView className="bg-general-500 flex-1">
       <View
@@ -39,10 +65,17 @@ const Home = () => {
         <View
           className={`flex flex-row justify-between w-full ${isTextHidden && "hidden"}`}
         >
-          <Pressable onPress={() => router.push("/(root)/address")}>
-            <Text className={`text-xl capitalize font-JakartaExtraBold`}>
-              Cto Novelistas #24
+          <Pressable
+            onPress={() => router.push("/(root)/address")}
+            className="max-w-[70%] flex-1 flex flex-row gap-2 items-center"
+          >
+            <Text
+              className={`text-xl capitalize font-JakartaExtraBold`}
+              numberOfLines={1}
+            >
+              {userAddress}
             </Text>
+            <Image source={icons.map} className="w-6 h-6" />
           </Pressable>
           <TouchableOpacity
             className="justify-center items-center w-10 h-10 rounded-full bg-white relative"

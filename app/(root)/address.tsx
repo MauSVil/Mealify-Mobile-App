@@ -4,19 +4,10 @@ import GoogleTextInput from "@/components/GoogleInputAutoComplete";
 import { icons } from "@/constants";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { router } from "expo-router";
+import { useLocationStore } from "@/store/locationStore";
 
 const Address = () => {
-  const handlePress = async ({
-    latitude,
-    longitude,
-    address,
-  }: {
-    latitude: number;
-    longitude: number;
-    address: string;
-  }) => {
-    console.log({ latitude, longitude, address });
-  };
+  const { userAddress, setUserLocation } = useLocationStore();
 
   return (
     <SafeAreaView className="p-8 bg-general-500 flex-1">
@@ -29,11 +20,13 @@ const Address = () => {
       <GoogleTextInput
         placeholder="Donde te encuentras?"
         icon={icons.target}
-        // initialLocation={userAddress}
+        initialLocation={userAddress}
         containerStyle="bg-neutral-100"
         textInputBackgroundColor="#F5F5F5"
-        // handlePress={(location) => setUserLocation(location)}
-        handlePress={handlePress}
+        handlePress={(location) => {
+          setUserLocation(location);
+          router.dismiss();
+        }}
       />
       <FlatList
         data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]}
@@ -42,7 +35,7 @@ const Address = () => {
           return (
             <TouchableOpacity
               className="flex-row items-center p-4 bg-white rounded-lg mb-4 gap-2 shadow-sm shadow-neutral-400/70"
-              // onPress={() => handlePress(item)}
+              onPress={() => router.dismiss()}
             >
               <Image source={icons.target} className="w-6 h-6" />
               <View className="flex-1">
