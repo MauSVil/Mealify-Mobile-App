@@ -53,6 +53,7 @@ const Cart = () => {
         <CustomButton
           title="Comprar"
           disabled={Object.values(cart).length === 0}
+          onPress={() => router.push("/(root)/map-followup")}
         />
       </View>
     </SafeAreaView>
