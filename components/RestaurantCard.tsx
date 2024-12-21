@@ -9,7 +9,7 @@ const RestaurantCard = ({ item }: { item: any }) => {
       onPress={() => router.push("/1")}
     >
       <Image
-        source={{ uri: item.heroImage }}
+        source={{ uri: item.hero_image }}
         className="h-[100px] w-full mb-3 rounded-md"
       />
       {/* <TouchableOpacity className="absolute right-3 top-3 bg-white rounded-full w-8 h-8 flex items-center justify-center">

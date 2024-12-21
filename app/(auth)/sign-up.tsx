@@ -1,12 +1,12 @@
 import { Alert, Image, Text, View } from "react-native";
 import React, { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { icons, images } from "@/constants";
 import CustomButton from "@/components/CustomButton";
 import InputField from "@/components/InputField";
 import { Link, router } from "expo-router";
 import { useSignUp } from "@clerk/clerk-expo";
 import ReactNativeModal from "react-native-modal";
+import { api } from "@/lib/api";
 
 const SignUp = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -50,14 +50,13 @@ const SignUp = () => {
       });
 
       if (signUpAttempt.status === "complete") {
-        // await fetchAPI("/(api)/user", {
-        //   method: "POST",
-        //   body: JSON.stringify({
-        //     name: form.name,
-        //     email: form.email,
-        //     clerkId: signUpAttempt.createdUserId,
-        //   }),
-        // });
+        await api.post("/auth/register", {
+          name: form.name,
+          email: form.email,
+          clerk_user_id: signUpAttempt.createdUserId,
+          phone: "5535209307",
+          role: "user",
+        });
 
         await setActive({ session: signUpAttempt.createdSessionId });
         setVerification({ ...verification, state: "success" });
