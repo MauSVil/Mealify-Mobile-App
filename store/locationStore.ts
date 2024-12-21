@@ -5,6 +5,8 @@ export const useLocationStore = create<LocationStore>((set) => ({
   userAddress: null,
   userLongitude: null,
   userLatitude: null,
+  selected: null,
+  setSelected: (selected: number) => set({ selected }),
   setUserLocation: ({
     latitude,
     longitude,

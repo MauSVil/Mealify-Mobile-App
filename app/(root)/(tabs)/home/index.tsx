@@ -57,6 +57,8 @@ const Home = () => {
     requestLocation();
   }, []);
 
+  // if (!hasPermissions) router.push('/(root)/no-permissions');
+
   return (
     <SafeAreaView className="bg-general-500 flex-1">
       <View
@@ -66,7 +68,7 @@ const Home = () => {
           className={`flex flex-row justify-between w-full ${isTextHidden && "hidden"}`}
         >
           <Pressable
-            onPress={() => router.push("/(root)/address")}
+            onPress={() => router.push("/(root)/(address)")}
             className="max-w-[70%] flex-1 flex flex-row gap-2 items-center"
           >
             <Text

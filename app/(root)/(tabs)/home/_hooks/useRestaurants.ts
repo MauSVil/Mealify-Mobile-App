@@ -1,7 +1,8 @@
-import { api } from "@/lib/api";
+import { useApi } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 
 export const useRestaurants = () => {
+  const api = useApi();
   const restaurantsQuery = useQuery({
     queryKey: ["restaurants"],
     queryFn: async () => {

@@ -5,9 +5,13 @@ import { icons } from "@/constants";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { router } from "expo-router";
 import { useLocationStore } from "@/store/locationStore";
+import { useAddresses } from "./_hooks/useAddresses";
 
 const Address = () => {
-  const { userAddress, setUserLocation } = useLocationStore();
+  const { userAddress, setUserLocation, setSelected, selected } =
+    useLocationStore();
+
+  const { getAddressesQuery, addAddressMutation } = useAddresses();
 
   return (
     <SafeAreaView className="p-8 bg-general-500 flex-1">
@@ -21,26 +25,46 @@ const Address = () => {
         placeholder="Donde te encuentras?"
         icon={icons.target}
         initialLocation={userAddress}
-        containerStyle="bg-neutral-100"
-        textInputBackgroundColor="#F5F5F5"
-        handlePress={(location) => {
+        containerStyle="bg-neutral-200"
+        textInputBackgroundColor="transparent"
+        handlePress={async (location) => {
+          const addressAdded = await addAddressMutation.mutateAsync({
+            address_line: location.address,
+            latitude: location.latitude,
+            longitude: location.longitude,
+          });
+
+          setSelected(addressAdded.id);
+
           setUserLocation(location);
           router.dismiss();
         }}
       />
       <FlatList
-        data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]}
+        data={getAddressesQuery.data || []}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => {
           return (
             <TouchableOpacity
-              className="flex-row items-center p-4 bg-white rounded-lg mb-4 gap-2 shadow-sm shadow-neutral-400/70"
-              onPress={() => router.dismiss()}
+              className={`flex-row items-center p-4 bg-white rounded-lg mb-4 gap-2 shadow-sm shadow-neutral-400/70 ${selected === item.id && "border-primary-500 border-[1px]"}`}
+              onPress={() => {
+                setSelected(item.id);
+                setUserLocation({
+                  latitude: item.latitude,
+                  longitude: item.longitude,
+                  address: item.address_line,
+                });
+                router.dismiss();
+              }}
             >
               <Image source={icons.target} className="w-6 h-6" />
               <View className="flex-1">
-                <Text className="text-neutral-900">Calle 1 # 123</Text>
-                <Text className="text-neutral-500">Bogotá, Colombia</Text>
+                <Text className="text-neutral-900" numberOfLines={2}>
+                  {item.address_line}
+                </Text>
+                <Text className="text-neutral-500">
+                  {item.latitude}, {item.longitude}
+                </Text>
               </View>
               <TouchableOpacity className="rounded-full flex items-center justify-center w-10 h-10">
                 <Image source={icons.close} className="w-6 h-6" />

@@ -49,7 +49,6 @@ const GoogleTextInput = ({
           },
         }}
         onPress={(data, details = null) => {
-          console.log({ data, details });
           handlePress({
             latitude: details?.geometry.location.lat!,
             longitude: details?.geometry.location.lng!,

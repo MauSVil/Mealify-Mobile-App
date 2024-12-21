@@ -6,10 +6,11 @@ import InputField from "@/components/InputField";
 import { Link, router } from "expo-router";
 import { useSignUp } from "@clerk/clerk-expo";
 import ReactNativeModal from "react-native-modal";
-import { api } from "@/lib/api";
+import { useApi } from "@/lib/api";
 
 const SignUp = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
+  const api = useApi();
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [form, setForm] = React.useState({

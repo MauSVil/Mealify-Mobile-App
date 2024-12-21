@@ -126,6 +126,8 @@ declare interface LocationStore {
   userLatitude: number | null;
   userLongitude: number | null;
   userAddress: string | null;
+  selected: number | null;
+  setSelected: (selected: number) => void;
   setUserLocation: ({
     latitude,
     longitude,

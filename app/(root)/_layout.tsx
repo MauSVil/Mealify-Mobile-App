@@ -5,7 +5,7 @@ const Layout = () => {
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen
-        name="address"
+        name="(address)/index"
         options={{
           presentation: "modal",
           headerShown: false,

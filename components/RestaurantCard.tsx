@@ -22,7 +22,9 @@ const RestaurantCard = ({ item }: { item: any }) => {
       )}
       <View className="flex flex-col">
         <Text>{item.name}</Text>
-        <Text className="text-general-200">Costo de envio: MXN15</Text>
+        <Text className="text-general-200">
+          Costo de envio: MXN{item.delivery_fee}
+        </Text>
       </View>
     </Pressable>
   );
