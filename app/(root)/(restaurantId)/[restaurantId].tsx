@@ -76,7 +76,7 @@ const RestaurantScreen = () => {
     <View className="flex-1 items-center bg-general-500 relative">
       <Image
         source={{
-          uri: restaurantInfo?.hero_image,
+          uri: restaurantInfo?.hero_image_min,
         }}
         className="w-full h-48 bg-general-100"
       />
@@ -91,7 +91,7 @@ const RestaurantScreen = () => {
       <Image
         className="rounded-full bg-general-100 w-20 h-20 top-36 absolute border-white border-2 shadow-md shadow-neutral-400/70 z-10"
         source={{
-          uri: restaurantInfo?.hero_image,
+          uri: restaurantInfo?.hero_image_min,
         }}
       />
       <View className="h-14 w-full" />

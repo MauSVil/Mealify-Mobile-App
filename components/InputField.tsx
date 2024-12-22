@@ -3,13 +3,13 @@ import {
   Text,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Image,
   TextInput,
   Platform,
   Keyboard,
 } from "react-native";
 import React from "react";
 import { InputFieldProps } from "@/types/type";
+import { Ionicons } from "@expo/vector-icons";
 
 const InputField = ({
   label,
@@ -18,6 +18,7 @@ const InputField = ({
   secureTextEntry = false,
   containerStyle,
   inputStyle,
+  keyboardAvoidingViewClassName,
   iconStyle,
   className,
   ...rest
@@ -25,6 +26,7 @@ const InputField = ({
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
+      className={keyboardAvoidingViewClassName}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View className="my-2 w-full">
@@ -34,13 +36,11 @@ const InputField = ({
             </Text>
           )}
           <View
-            className={`flex flex-row justify-start items-center relative bg-neutral-100 rounded-full border border-neutral-100 focus:border-primary-500 ${containerStyle}`}
+            className={`flex flex-row justify-start items-center relative bg-neutral-100 rounded-full border border-neutral-100 focus:border-primary-500 w-full`}
           >
-            {icon && (
-              <Image source={icon} className={`w-6 h-6 ml-4 ${iconStyle}`} />
-            )}
+            {icon && <Ionicons name="search" size={22} color="black" />}
             <TextInput
-              className={`rounded-full p-4 font-JakartaSemiBold text-[15px] flex-1 ${inputStyle} text-left`}
+              className={`rounded-full p-4 font-JakartaSemiBold text-[15px] ${inputStyle} text-left`}
               secureTextEntry={secureTextEntry}
               {...rest}
             />

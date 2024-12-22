@@ -14,7 +14,7 @@ const RestaurantCard = ({ item }: { item: any }) => {
         className={`h-[100px] w-full mb-3 rounded-md bg-general-100 ${isLoading ? "animate-pulse" : ""}`}
       >
         <Image
-          source={{ uri: item.hero_image }}
+          source={{ uri: item.hero_image_min }}
           className="h-full w-full"
           onLoadEnd={() => setIsLoading(false)}
         />
