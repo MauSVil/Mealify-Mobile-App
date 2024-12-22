@@ -125,29 +125,19 @@ const Home = () => {
       >
         <RestaurantsFlatList
           title="Para ti"
-          restaurants={restaurantsQuery.data!}
+          restaurants={restaurantsQuery.data?.all || []}
           loading={restaurantsQuery.isLoading}
         />
-        <RestaurantsFlatList
-          title="Favoritos"
-          restaurants={restaurantsQuery.data!}
-          loading={restaurantsQuery.isLoading}
-        />
-        <RestaurantsFlatList
-          title="No te lo puedes perder"
-          restaurants={restaurantsQuery.data!}
-          loading={restaurantsQuery.isLoading}
-        />
-        <RestaurantsFlatList
-          title="No te lo puedes perder"
-          restaurants={restaurantsQuery.data!}
-          loading={restaurantsQuery.isLoading}
-        />
-        <RestaurantsFlatList
-          title="No te lo puedes perder"
-          restaurants={restaurantsQuery.data!}
-          loading={restaurantsQuery.isLoading}
-        />
+        {Object.keys(restaurantsQuery.data || [])
+          .filter((cat) => cat !== "all")
+          .map((category) => (
+            <RestaurantsFlatList
+              key={category}
+              title={category}
+              restaurants={restaurantsQuery.data![category]}
+              loading={restaurantsQuery.isLoading}
+            />
+          ))}
       </ScrollView>
     </SafeAreaView>
   );
