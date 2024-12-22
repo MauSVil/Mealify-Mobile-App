@@ -3,6 +3,7 @@ import React from "react";
 import { icons } from "@/constants";
 import { cartStore } from "@/store/cartStore";
 import { Product } from "@/types/type";
+import { Ionicons } from "@expo/vector-icons";
 
 const ProductCard = ({ item }: { item: Product }) => {
   const { cart, addProduct, removeProduct } = cartStore();
@@ -25,11 +26,7 @@ const ProductCard = ({ item }: { item: Product }) => {
         <View className="w-[110px] flex flex-row justify-between absolute bottom-3 right-3">
           <View className="bg-white w-8 h-8 flex items-center justify-center rounded-full">
             <TouchableOpacity onPress={() => removeProduct(String(item.id))}>
-              <Image
-                source={icons.checkmark}
-                className="h-4 w-4"
-                tintColor="#000"
-              />
+              <Ionicons name="remove" size={24} color="black" />
             </TouchableOpacity>
           </View>
           <View className="bg-white w-8 h-8 flex items-center justify-center rounded-full">
@@ -39,11 +36,7 @@ const ProductCard = ({ item }: { item: Product }) => {
             <TouchableOpacity
               onPress={() => addProduct({ ...item, quantity: 1 })}
             >
-              <Image
-                source={icons.checkmark}
-                className="h-4 w-4"
-                tintColor="#000"
-              />
+              <Ionicons name="add" size={24} color="black" />
             </TouchableOpacity>
           </View>
         </View>
@@ -52,11 +45,7 @@ const ProductCard = ({ item }: { item: Product }) => {
           <TouchableOpacity
             onPress={() => addProduct({ ...item, quantity: 1 })}
           >
-            <Image
-              source={icons.checkmark}
-              className="h-4 w-4"
-              tintColor="#000"
-            />
+            <Ionicons name="add" size={24} color="black" />
           </TouchableOpacity>
         </View>
       )}

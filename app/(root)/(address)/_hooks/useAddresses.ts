@@ -18,8 +18,16 @@ export const useAddresses = () => {
     },
   });
 
+  const deleteAddressMutation = useMutation({
+    mutationFn: async (id: string) => {
+      await api.delete(`/user-addresses/${id}`);
+      getAddressesQuery.refetch();
+    },
+  });
+
   return {
     getAddressesQuery,
     addAddressMutation,
+    deleteAddressMutation,
   };
 };

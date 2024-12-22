@@ -12,7 +12,7 @@ const Layout = () => {
         }}
       />
       <Stack.Screen
-        name="[restaurantId]"
+        name="(restaurantId)/[restaurantId]"
         options={{ headerShown: false, gestureDirection: "vertical" }}
       />
       <Stack.Screen name="cart" options={{ headerShown: false }} />

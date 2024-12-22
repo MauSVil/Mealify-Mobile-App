@@ -1,8 +1,9 @@
 import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import React from "react";
 import { icons } from "@/constants";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import ProductCard from "@/components/ProductCard";
+import { useRestaurant } from "./_hooks/useRestaurant";
 
 const products = [
   {
@@ -67,13 +68,17 @@ const products = [
 ];
 
 const RestaurantScreen = () => {
+  const { restaurantId } = useLocalSearchParams();
+  const { singleRestaurantQuery } = useRestaurant(Number(restaurantId));
+  const restaurantInfo = singleRestaurantQuery.data;
+
   return (
     <View className="flex-1 items-center bg-general-500 relative">
       <Image
         source={{
-          uri: "https://minio.mausvil.dev/businesses/67210f7afbd3a0f9459c9f46.jpeg",
+          uri: restaurantInfo?.hero_image,
         }}
-        className="w-full h-48"
+        className="w-full h-48 bg-general-100"
       />
       <View className="flex flex-row absolute top-16 left-10 items-center">
         <TouchableOpacity
@@ -84,9 +89,9 @@ const RestaurantScreen = () => {
         </TouchableOpacity>
       </View>
       <Image
-        className="rounded-full bg-white w-20 h-20 top-36 absolute border-white border-2 shadow-md shadow-neutral-400/70 z-10"
+        className="rounded-full bg-general-100 w-20 h-20 top-36 absolute border-white border-2 shadow-md shadow-neutral-400/70 z-10"
         source={{
-          uri: "https://minio.mausvil.dev/businesses/67210f7afbd3a0f9459c9f46.jpeg",
+          uri: restaurantInfo?.hero_image,
         }}
       />
       <View className="h-14 w-full" />
@@ -101,13 +106,13 @@ const RestaurantScreen = () => {
                 className="font-JakartaExtraBold text-2xl"
                 numberOfLines={1}
               >
-                La casa de Toño (ZONA AZUL)
+                {restaurantInfo?.name}
               </Text>
               <Text
                 className="font-Jakarta text-xl text-general-200"
                 numberOfLines={2}
               >
-                La casa de todos
+                {restaurantInfo?.phone}
               </Text>
             </View>
           }

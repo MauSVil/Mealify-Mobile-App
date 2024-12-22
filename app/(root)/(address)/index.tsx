@@ -1,4 +1,5 @@
 import React from "react";
+import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GoogleTextInput from "@/components/GoogleInputAutoComplete";
 import { icons } from "@/constants";
@@ -11,7 +12,25 @@ const Address = () => {
   const { userAddress, setUserLocation, setSelected, selected } =
     useLocationStore();
 
-  const { getAddressesQuery, addAddressMutation } = useAddresses();
+  const { getAddressesQuery, addAddressMutation, deleteAddressMutation } =
+    useAddresses();
+
+  if (getAddressesQuery.isLoading || getAddressesQuery.isRefetching) {
+    return (
+      <SafeAreaView className="p-8 bg-general-500 flex-1">
+        <TouchableOpacity
+          className="bg-white flex items-center justify-center rounded-full w-10 h-10 mb-4"
+          onPress={() => router.dismiss()}
+        >
+          <Ionicons name="close" size={20} />
+        </TouchableOpacity>
+        <View className="w-full h-16 bg-general-100 animate-pulse rounded-lg mb-4" />
+        <View className="w-full h-24 bg-general-100 animate-pulse rounded-lg mb-4" />
+        <View className="w-full h-24 bg-general-100 animate-pulse rounded-lg mb-4" />
+        <View className="w-full h-24 bg-general-100 animate-pulse rounded-lg mb-4" />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView className="p-8 bg-general-500 flex-1">
@@ -19,7 +38,7 @@ const Address = () => {
         className="bg-white flex items-center justify-center rounded-full w-10 h-10 mb-4"
         onPress={() => router.dismiss()}
       >
-        <Image source={icons.close} className="w-6 h-6" />
+        <Ionicons name="close" size={20} />
       </TouchableOpacity>
       <GoogleTextInput
         placeholder="Donde te encuentras?"
@@ -66,8 +85,17 @@ const Address = () => {
                   {item.latitude}, {item.longitude}
                 </Text>
               </View>
-              <TouchableOpacity className="rounded-full flex items-center justify-center w-10 h-10">
-                <Image source={icons.close} className="w-6 h-6" />
+              <TouchableOpacity
+                className="rounded-full flex items-center justify-center w-10 h-10 bg-red-400"
+                onPress={() => deleteAddressMutation.mutateAsync(item.id)}
+                disabled={getAddressesQuery.data?.length <= 1}
+              >
+                <Ionicons
+                  name="trash"
+                  className="text-white"
+                  color="white"
+                  size={15}
+                />
               </TouchableOpacity>
             </TouchableOpacity>
           );
