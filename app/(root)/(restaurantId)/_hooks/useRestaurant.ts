@@ -12,7 +12,16 @@ export const useRestaurant = (id: number) => {
     },
   });
 
+  const productsQuery = useQuery({
+    queryKey: ["products", id],
+    queryFn: async () => {
+      const { data } = await api.get(`/products/restaurant/${id}`);
+      return data;
+    },
+  });
+
   return {
     singleRestaurantQuery,
+    productsQuery,
   };
 };

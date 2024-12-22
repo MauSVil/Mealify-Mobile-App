@@ -1,11 +1,9 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
-import { icons } from "@/constants";
 import { cartStore } from "@/store/cartStore";
-import { Product } from "@/types/type";
 import { Ionicons } from "@expo/vector-icons";
 
-const ProductCard = ({ item }: { item: Product }) => {
+const ProductCard = ({ item }: { item: any }) => {
   const { cart, addProduct, removeProduct } = cartStore();
 
   return (
@@ -17,10 +15,11 @@ const ProductCard = ({ item }: { item: Product }) => {
         <Text className="text-base font-Jakarta" numberOfLines={2}>
           {item.description}
         </Text>
+        <Text className="mt-2 text-base font-JakartaBold">${item.price}</Text>
       </View>
       <Image
-        source={{ uri: item.image }}
-        className="w-[150px] h-[100px] rounded-xl"
+        source={{ uri: item.image_min }}
+        className="w-[150px] h-full rounded-xl"
       />
       {cart[item.id]?.quantity > 0 ? (
         <View className="w-[110px] flex flex-row justify-between absolute bottom-3 right-3">
