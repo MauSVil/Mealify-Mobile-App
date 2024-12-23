@@ -5,7 +5,7 @@ import { icons } from "@/constants";
 import { cartStore } from "@/store/cartStore";
 import { Ionicons } from "@expo/vector-icons";
 
-const CartCard = ({ item }: { item: CartProduct }) => {
+const CartCard = ({ item }: { item: any }) => {
   const { cart, removeProduct, addProduct } = cartStore();
   return (
     <View className="bg-white min-h-40 rounded-xl mb-4 shadow-neutral-400/70 shadow-sm flex flex-row justify-between">
@@ -29,7 +29,7 @@ const CartCard = ({ item }: { item: CartProduct }) => {
         </View>
       </View>
       <Image
-        source={{ uri: item.image }}
+        source={{ uri: item.image_min }}
         className="w-1/2 h-full rounded-r-xl"
       />
       {cart[item.id]?.quantity > 0 ? (

@@ -51,7 +51,7 @@ const Cart = () => {
       />
       <View className="w-10/12 mx-10">
         <CustomButton
-          title="Comprar"
+          title="Pagar"
           disabled={Object.values(cart).length === 0}
           onPress={() => router.push("/(root)/map-followup")}
         />
