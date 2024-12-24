@@ -4,6 +4,7 @@ import { icons } from "@/constants";
 import { router, useLocalSearchParams } from "expo-router";
 import ProductCard from "@/components/ProductCard";
 import { useRestaurant } from "./_hooks/useRestaurant";
+import { Ionicons } from "@expo/vector-icons";
 
 const RestaurantScreen = () => {
   const { restaurantId } = useLocalSearchParams();
@@ -25,7 +26,7 @@ const RestaurantScreen = () => {
           className="bg-white items-center justify-center rounded-full w-10 h-10"
           onPress={() => router.dismiss()}
         >
-          <Image source={icons.close} className="w-6 h-6" tintColor="#000" />
+          <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
       </View>
       <Image

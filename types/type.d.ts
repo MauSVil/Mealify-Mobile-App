@@ -109,7 +109,7 @@ declare interface Product {
   createdAt?: string | null;
   updatedAt?: string | null;
   deletedAt?: string | null;
-  restaurantId: string;
+  restaurant_id: string;
 }
 
 interface CartProduct extends Product {
