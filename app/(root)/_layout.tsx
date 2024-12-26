@@ -16,7 +16,10 @@ const Layout = () => {
         options={{ headerShown: false, gestureDirection: "vertical" }}
       />
       <Stack.Screen name="cart" options={{ headerShown: false }} />
-      <Stack.Screen name="map-followup" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="(map-followup)/[orderId]"
+        options={{ headerShown: false }}
+      />
     </Stack>
   );
 };

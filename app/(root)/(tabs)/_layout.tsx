@@ -55,6 +55,16 @@ const Layout = () => {
           ),
         }}
       />
+      <Tabs.Screen
+        name="orders/index"
+        options={{
+          title: "Orders",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon focused={focused} source={icons.home} />
+          ),
+        }}
+      />
     </Tabs>
   );
 };

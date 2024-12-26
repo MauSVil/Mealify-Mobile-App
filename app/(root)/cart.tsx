@@ -61,8 +61,11 @@ const Cart = () => {
               payment_method_id: paymentMethod.id,
               payment_intent_id: paymentIntent.id,
               customer_id: customer,
+              cart,
+              userLatitude,
+              userLongitude,
             });
-            const { result } = data;
+            const { result, orderId } = data;
             if (result.client_secret) {
               // Add to DB
               intentCreationCallback({
@@ -70,7 +73,7 @@ const Cart = () => {
               });
 
               clearCart();
-              router.push("/(root)/map-followup");
+              router.push(`/(root)/(map-followup)/${orderId}`);
             }
           }
         },
