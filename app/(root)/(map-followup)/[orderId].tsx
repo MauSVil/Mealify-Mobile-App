@@ -11,13 +11,10 @@ import { icons } from "@/constants";
 import { router, useLocalSearchParams } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import { cartStore } from "@/store/cartStore";
-import ProductCard from "@/components/ProductCard";
 import { useOrder } from "./_hooks/useOrder";
 
 const MapFollowUp = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const { cart } = cartStore();
   const { orderId } = useLocalSearchParams();
 
   if (!orderId) router.dismiss();
@@ -65,7 +62,7 @@ const MapFollowUp = () => {
 
             <View className="w-full h-[2px] mb-6 bg-general-100" />
 
-            {Object.values(cart).map((item) => (
+            {(orderQuery.data.order_items || []).map((item: any) => (
               <View
                 className="w-full bg-white mb-5 flex flex-row justify-between items-center gap-4 relative"
                 key={item.id}
@@ -75,14 +72,14 @@ const MapFollowUp = () => {
                 </Text>
                 <View className="flex flex-col max-w-[50%]">
                   <Text className="text-lg font-JakartaBold" numberOfLines={1}>
-                    {item.name}
+                    {item.products.name}
                   </Text>
                   <Text className="text-base font-Jakarta" numberOfLines={3}>
-                    {item.description}
+                    {item.products.description}
                   </Text>
                 </View>
                 <Image
-                  source={{ uri: item.image }}
+                  source={{ uri: item.products.image_min }}
                   className="w-[100px] h-[100px] rounded-xl"
                 />
               </View>

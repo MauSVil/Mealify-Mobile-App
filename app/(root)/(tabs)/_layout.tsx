@@ -1,24 +1,19 @@
-import { icons } from "@/constants";
+import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { Image, ImageSourcePropType, View } from "react-native";
+import { View } from "react-native";
 
 const TabIcon = ({
   focused,
-  source,
+  icon,
 }: {
-  source: ImageSourcePropType;
+  icon: keyof typeof Ionicons.glyphMap;
   focused: boolean;
 }) => (
   <View className={`flex flex-row justify-center items-center rounded-full`}>
     <View
       className={`rounded-full w-12 h-12 items-center justify-center ${focused ? "bg-general-400" : ""}`}
     >
-      <Image
-        source={source}
-        tintColor="white"
-        resizeMode="contain"
-        className="w-7 h-7"
-      />
+      <Ionicons name={icon} size={26} color="white" />
     </View>
   </View>
 );
@@ -51,17 +46,27 @@ const Layout = () => {
           title: "Home",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} source={icons.home} />
+            <TabIcon focused={focused} icon="home" />
           ),
         }}
       />
       <Tabs.Screen
         name="orders/index"
         options={{
-          title: "Orders",
+          title: "Ordenes",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon focused={focused} source={icons.home} />
+            <TabIcon focused={focused} icon="reader" />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile/index"
+        options={{
+          title: "Perfil",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon focused={focused} icon="person" />
           ),
         }}
       />
