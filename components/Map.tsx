@@ -4,21 +4,23 @@ import { ActivityIndicator, View } from "react-native";
 import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
 // import MapViewDirections from "react-native-maps-directions";
 
-const markers = [
-  { id: 1, lat: 19.5105, lng: -99.2342 },
-  { id: 2, lat: 19.511, lng: -99.2347 },
-  { id: 3, lat: 19.5098, lng: -99.2335 },
-  { id: 4, lat: 19.5102, lng: -99.235 },
-  { id: 5, lat: 19.5115, lng: -99.2338 },
-  { id: 6, lat: 19.5095, lng: -99.234 },
-];
+// const markers = [
+//   { id: 1, lat: 19.5105, lng: -99.2342 },
+//   { id: 2, lat: 19.511, lng: -99.2347 },
+//   { id: 3, lat: 19.5098, lng: -99.2335 },
+//   { id: 4, lat: 19.5102, lng: -99.235 },
+//   { id: 5, lat: 19.5115, lng: -99.2338 },
+//   { id: 6, lat: 19.5095, lng: -99.234 },
+// ];
 
 const Map = ({
   longitude,
   latitude,
+  markers,
 }: {
   longitude: number;
   latitude: number;
+  markers: any[];
 }) => {
   const { userLongitude, userLatitude } = useLocationStore();
 
@@ -52,10 +54,10 @@ const Map = ({
         <Marker
           key={marker.id}
           coordinate={{
-            latitude: marker.lat,
-            longitude: marker.lng,
+            latitude: marker.latitude,
+            longitude: marker.longitude,
           }}
-          title="Driver"
+          title={marker.title}
           image={icons.marker}
         />
       ))}
@@ -65,7 +67,6 @@ const Map = ({
           longitude: longitude || userLongitude,
         }}
         title="Tu ubicación"
-        description="Estamos buscando un repartidor para ti..."
         image={icons.pin}
       />
     </MapView>

@@ -1,5 +1,5 @@
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
@@ -8,6 +8,7 @@ import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { tokenCache } from "@/lib/auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "react-native-get-random-values";
+import socketService from "@/socketService";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
@@ -33,10 +34,24 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
+    if (loaded) SplashScreen.hideAsync();
   }, [loaded]);
+
+  useEffect(() => {
+    socketService.initialize();
+
+    const socket = socketService.getSocket();
+
+    if (socket) {
+      socket.on("message", (data) => {
+        router.dismiss();
+      });
+    }
+
+    return () => {
+      socketService.disconnect();
+    };
+  }, []);
 
   if (!loaded) {
     return null;

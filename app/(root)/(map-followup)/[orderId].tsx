@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Map from "@/components/Map";
 import {
   ActivityIndicator,
@@ -12,6 +12,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { useOrder } from "./_hooks/useOrder";
+import socketService from "@/socketService";
 
 const MapFollowUp = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -19,12 +20,22 @@ const MapFollowUp = () => {
 
   if (!orderId) router.dismiss();
 
-  const { orderQuery } = useOrder(orderId as string);
+  useEffect(() => {
+    const socket = socketService.getSocket();
 
-  if (orderQuery.isLoading) {
+    if (socket) socketService.joinRoom(orderId as string);
+
+    return () => {
+      socketService.disconnect();
+    };
+  }, []);
+
+  const { orderQuery, candidatesQuery } = useOrder(orderId as string);
+
+  if (orderQuery.isLoading || candidatesQuery.isLoading) {
     return (
       <View className="flex-1 justify-center items-center">
-        <ActivityIndicator size="large" color="#000" />
+        <ActivityIndicator size={24} color="#000" />
       </View>
     );
   }
@@ -46,6 +57,15 @@ const MapFollowUp = () => {
         <Map
           latitude={orderQuery.data.latitude}
           longitude={orderQuery.data.longitude}
+          markers={
+            candidatesQuery.data?.map((candidate: any) => ({
+              id: candidate.id,
+              latitude: candidate.latitude,
+              longitude: candidate.longitude,
+              title: candidate.name,
+              description: candidate.phone,
+            })) || []
+          }
         />
         <BottomSheet ref={bottomSheetRef} snapPoints={["30%", "85%"]} index={1}>
           <BottomSheetView style={{ flex: 1, padding: 20 }}>

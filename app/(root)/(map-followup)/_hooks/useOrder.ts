@@ -12,7 +12,16 @@ export const useOrder = (id: number | string) => {
     },
   });
 
+  const candidatesQuery = useQuery({
+    queryKey: ["order", id, "candidates"],
+    queryFn: async () => {
+      const { data } = await api.get(`/delivery-drivers/candidates/${id}`);
+      return data;
+    },
+  });
+
   return {
     orderQuery,
+    candidatesQuery,
   };
 };
