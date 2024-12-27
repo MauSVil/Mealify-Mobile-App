@@ -5,8 +5,7 @@ export const useApi = () => {
   const { getToken } = useAuth();
 
   const api = axios.create({
-    // baseURL: "http://lcsokkooowkogocok400kk0o.5.161.92.225.sslip.io",
-    baseURL: "http://localhost:3000",
+    baseURL: process.env.EXPO_PUBLIC_SERVER_URL,
     timeout: 10000,
   });
 

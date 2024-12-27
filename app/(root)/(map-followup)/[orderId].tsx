@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import Map from "@/components/Map";
 import {
   ActivityIndicator,
@@ -13,6 +13,8 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { useOrder } from "./_hooks/useOrder";
 import socketService from "@/socketService";
+import RestaurantPreparing from "./_components/RestaurantPreparing";
+import ReadyForPickup from "./_components/ReadyForPickup";
 
 const MapFollowUp = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -22,9 +24,7 @@ const MapFollowUp = () => {
 
   useEffect(() => {
     const socket = socketService.getSocket();
-
     if (socket) socketService.joinRoom(orderId as string);
-
     return () => {
       socketService.disconnect();
     };
@@ -39,6 +39,13 @@ const MapFollowUp = () => {
       </View>
     );
   }
+
+  const component: Record<string, React.ReactElement> = {
+    preparing: <RestaurantPreparing data={orderQuery.data} />,
+    ready_for_pickup: <ReadyForPickup data={orderQuery.data} />,
+  };
+
+  const BottomSheetContent = component[orderQuery.data.status];
 
   return (
     <GestureHandlerRootView>
@@ -69,41 +76,7 @@ const MapFollowUp = () => {
         />
         <BottomSheet ref={bottomSheetRef} snapPoints={["30%", "85%"]} index={1}>
           <BottomSheetView style={{ flex: 1, padding: 20 }}>
-            <View className="flex flex-row justify-between items-center">
-              <Text className="text-2xl font-JakartaExtraBold max-w-[70%]">
-                Estamos buscando un repartidor para ti...
-              </Text>
-              <ActivityIndicator size={40} color="#000" />
-            </View>
-
-            <Text className="text-xl mb-2 mt-10 font-JakartaSemiBold">
-              Resumen de tu pedido
-            </Text>
-
-            <View className="w-full h-[2px] mb-6 bg-general-100" />
-
-            {(orderQuery.data.order_items || []).map((item: any) => (
-              <View
-                className="w-full bg-white mb-5 flex flex-row justify-between items-center gap-4 relative"
-                key={item.id}
-              >
-                <Text className="text-base font-Jakarta" numberOfLines={1}>
-                  x {item.quantity}
-                </Text>
-                <View className="flex flex-col max-w-[50%]">
-                  <Text className="text-lg font-JakartaBold" numberOfLines={1}>
-                    {item.products.name}
-                  </Text>
-                  <Text className="text-base font-Jakarta" numberOfLines={3}>
-                    {item.products.description}
-                  </Text>
-                </View>
-                <Image
-                  source={{ uri: item.products.image_min }}
-                  className="w-[100px] h-[100px] rounded-xl"
-                />
-              </View>
-            ))}
+            {BottomSheetContent}
           </BottomSheetView>
         </BottomSheet>
       </View>

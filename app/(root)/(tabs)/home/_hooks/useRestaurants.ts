@@ -26,11 +26,13 @@ export const useRestaurants = (category?: string) => {
   const restaurantsByCategoryQuery = useQuery({
     queryKey: ["restaurantsByCategory", userLatitude, userLongitude, category],
     queryFn: async () => {
-      const { data } = await api.get(
-        `/restaurants/${userLatitude}/${userLongitude}/${category}`,
-      );
-
-      return data;
+      if (category) {
+        const { data } = await api.get(
+          `/restaurants/${userLatitude}/${userLongitude}/${category}`,
+        );
+        return data;
+      }
+      return [];
     },
   });
 
