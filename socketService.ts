@@ -16,10 +16,6 @@ const socketService = {
       socket.on("disconnect", (reason) => {
         console.log("Disconnected from server:", reason);
       });
-
-      socket.on("message", (data) => {
-        console.log("Message from server:", data);
-      });
     }
   },
 

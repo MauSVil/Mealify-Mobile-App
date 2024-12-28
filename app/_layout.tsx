@@ -39,15 +39,6 @@ export default function RootLayout() {
 
   useEffect(() => {
     socketService.initialize();
-
-    const socket = socketService.getSocket();
-
-    if (socket) {
-      socket.on("message", (data) => {
-        router.dismiss();
-      });
-    }
-
     return () => {
       socketService.disconnect();
     };
