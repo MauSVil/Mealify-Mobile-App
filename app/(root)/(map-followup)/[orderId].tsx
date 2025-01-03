@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Map from "@/components/Map";
 import {
   ActivityIndicator,
@@ -15,24 +15,38 @@ import { useOrder } from "./_hooks/useOrder";
 import socketService from "@/socketService";
 import RestaurantPreparing from "./_components/RestaurantPreparing";
 import ReadyForPickup from "./_components/ReadyForPickup";
+import MapView from "react-native-maps";
+import { useMap } from "./_hooks/useMap";
 
 const MapFollowUp = () => {
+  const [isMapReady, setIsMapReady] = useState(false);
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const mapRef = useRef<MapView>(null);
   const { orderId } = useLocalSearchParams();
 
-  if (!orderId) router.dismiss();
-
   useEffect(() => {
+    if (!orderId) {
+      router.dismiss();
+      return;
+    }
     const socket = socketService.getSocket();
     if (socket) socketService.joinRoom(orderId as string);
+
     return () => {
       socketService.disconnect();
     };
-  }, []);
+  }, [orderId]);
 
   const { orderQuery, candidatesQuery } = useOrder(orderId as string);
 
-  if (orderQuery.isLoading || candidatesQuery.isLoading) {
+  const { markers, origin, destination } = useMap({
+    data: orderQuery.data,
+    isMapReady,
+    candidatesData: candidatesQuery.data,
+    mapRef,
+  });
+
+  if (!orderId || orderQuery.isLoading || candidatesQuery.isLoading) {
     return (
       <View className="flex-1 justify-center items-center">
         <ActivityIndicator size={24} color="#000" />
@@ -40,12 +54,19 @@ const MapFollowUp = () => {
     );
   }
 
-  const component: Record<string, React.ReactElement> = {
-    preparing: <RestaurantPreparing data={orderQuery.data} />,
-    ready_for_pickup: <ReadyForPickup data={orderQuery.data} />,
+  const renderBottomSheetContent = (status: string) => {
+    const components: Record<string, React.ReactElement> = {
+      preparing: <RestaurantPreparing data={orderQuery.data} />,
+      ready_for_pickup: <ReadyForPickup data={orderQuery.data} />,
+    };
+    return (
+      components[status] || (
+        <Text className="text-center text-gray-600">
+          Estado desconocido: {status}
+        </Text>
+      )
+    );
   };
-
-  const BottomSheetContent = component[orderQuery.data.status];
 
   return (
     <GestureHandlerRootView>
@@ -62,21 +83,15 @@ const MapFollowUp = () => {
           </TouchableOpacity>
         </View>
         <Map
-          latitude={orderQuery.data.latitude}
-          longitude={orderQuery.data.longitude}
-          markers={
-            candidatesQuery.data?.map((candidate: any) => ({
-              id: candidate.id,
-              latitude: candidate.latitude,
-              longitude: candidate.longitude,
-              title: candidate.name,
-              description: candidate.phone,
-            })) || []
-          }
+          mapRef={mapRef}
+          markers={markers}
+          onMapReady={() => setIsMapReady(true)}
+          origin={origin}
+          destination={destination}
         />
         <BottomSheet ref={bottomSheetRef} snapPoints={["30%", "85%"]} index={1}>
           <BottomSheetView style={{ flex: 1, padding: 20 }}>
-            {BottomSheetContent}
+            {renderBottomSheetContent(orderQuery.data.status)}
           </BottomSheetView>
         </BottomSheet>
       </View>
