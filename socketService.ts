@@ -25,6 +25,7 @@ const socketService = {
 
   joinRoom: (room: string): void => {
     if (socket) {
+      console.log("Joining room", room);
       socket.emit("message", { type: "joinRoom", roomId: room });
     }
   },

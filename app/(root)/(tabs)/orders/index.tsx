@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FlatList, Text, View } from "react-native";
+import { FlatList, RefreshControl, Text, View } from "react-native";
 import { useOrders } from "./_hooks/useOrders";
 import OrderCard from "@/components/OrderCard";
 
@@ -20,6 +20,12 @@ const OrdersScreen = () => {
             paddingBottom: 150,
           }}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={ordersQuery.isRefetching}
+              onRefresh={() => ordersQuery.refetch()}
+            />
+          }
         />
       </View>
     </SafeAreaView>

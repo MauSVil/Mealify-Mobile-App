@@ -3,7 +3,7 @@ import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 
 interface MapProps {
-  origin: {
+  origin?: {
     latitude: number;
     longitude: number;
   };
@@ -37,8 +37,8 @@ const Map: React.FC<MapProps> = ({
   destination,
 }) => {
   const defaultRegion = {
-    latitude: origin?.latitude,
-    longitude: origin?.longitude,
+    latitude: origin?.latitude || 0,
+    longitude: origin?.longitude || 0,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   };
@@ -72,21 +72,18 @@ const Map: React.FC<MapProps> = ({
             {marker?.icon && <Ionicons name={marker.icon} size={24} />}
           </Marker>
         ))}
-      {origin.latitude !== 0 &&
-        origin.longitude !== 0 &&
-        destination?.latitude !== 0 &&
-        destination?.longitude !== 0 && (
-          <MapViewDirections
-            origin={origin}
-            destination={destination}
-            apikey={process.env.EXPO_PUBLIC_GOOGLE_API_KEY!}
-            strokeColor="#0286FF"
-            strokeWidth={4}
-            onError={(errorMessage) => {
-              console.error("Error calculating directions:", errorMessage);
-            }}
-          />
-        )}
+      {origin && destination && (
+        <MapViewDirections
+          origin={origin}
+          destination={destination}
+          apikey={process.env.EXPO_PUBLIC_GOOGLE_API_KEY!}
+          strokeColor="#0286FF"
+          strokeWidth={4}
+          onError={(errorMessage) => {
+            console.error("Error calculating directions:", errorMessage);
+          }}
+        />
+      )}
     </MapView>
   );
 };
