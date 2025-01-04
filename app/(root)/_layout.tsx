@@ -20,6 +20,10 @@ const Layout = () => {
         name="(map-followup)/[orderId]"
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="(map-followup)/payment-intent/[paymentIntent]"
+        options={{ headerShown: false }}
+      />
     </Stack>
   );
 };

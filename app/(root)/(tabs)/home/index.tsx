@@ -21,7 +21,7 @@ import { useLocationStore } from "@/store/locationStore";
 import { Ionicons } from "@expo/vector-icons";
 
 const Home = () => {
-  const { setUserLocation, userAddress } = useLocationStore();
+  const { setUserLocation, userAddress, selected } = useLocationStore();
   const { restaurantsQuery } = useRestaurants();
   const [isTextHidden, setIsTextHidden] = useState(false);
   const [hasPermissions, setHasPermissions] = useState(true);
@@ -48,11 +48,13 @@ const Home = () => {
         longitude: location.coords.longitude,
       });
 
-      setUserLocation({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        address: `${address[0].name}, ${address[0].region}`,
-      });
+      if (!selected) {
+        setUserLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          address: `${address[0].name}, ${address[0].region}`,
+        });
+      }
     };
 
     requestLocation();

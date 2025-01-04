@@ -25,6 +25,7 @@ const Cart = () => {
   const { cart, clearCart } = cartStore();
   const { initPaymentSheet, presentPaymentSheet, loading } = usePaymentSheet();
   const { userLatitude, userLongitude } = useLocationStore();
+  const [paymentIntent, setPaymentIntent] = useState("");
 
   const total = Object.values(cart).reduce(
     (acc, { price, quantity }) => acc + price * quantity,
@@ -43,7 +44,9 @@ const Cart = () => {
         clerkId: user?.id,
         cart,
       });
-      const { paymentIntent, ephemeralKey, customer } = data;
+      const { paymentIntent, paymentIntentId, ephemeralKey, customer } = data;
+
+      setPaymentIntent(paymentIntentId);
 
       const { error } = await initPaymentSheet({
         customerId: customer,
@@ -69,11 +72,13 @@ const Cart = () => {
       Alert.alert(`${error.code}`, error.message);
     } else {
       setReady(false);
+      clearCart();
+      router.push(`/(root)/(map-followup)/payment-intent/${paymentIntent}`);
     }
   };
 
   useEffect(() => {
-    initializePaymentSheet();
+    if (total > 0) initializePaymentSheet();
   }, [total]);
 
   return (
