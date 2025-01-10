@@ -40,7 +40,7 @@ const MapFollowUp = () => {
 
   const { orderQuery, candidatesQuery } = useOrder(orderId as string);
 
-  const { markers, origin, destination, loading } = useMap({
+  const { markers, origin, destination, loading, initialRegion } = useMap({
     data: orderQuery.data,
     isMapReady,
     candidatesData: candidatesQuery.data,
@@ -79,6 +79,7 @@ const MapFollowUp = () => {
           onMapReady={() => setIsMapReady(true)}
           origin={origin}
           destination={destination}
+          initialRegion={initialRegion}
         />
       )
     );

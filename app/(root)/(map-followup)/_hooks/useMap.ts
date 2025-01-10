@@ -3,8 +3,6 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { useEffect, useState } from "react";
 import MapView from "react-native-maps";
 
-const offsetLat = 0.002;
-
 export const useMap = ({
   data,
   mapRef,
@@ -26,12 +24,12 @@ export const useMap = ({
   const [destination, setDestination] = useState<
     { latitude: number; longitude: number } | undefined
   >();
-
-  useEffect(() => {
-    if (data?.status === "pending" && bottomSheetRef.current) {
-      bottomSheetRef.current.snapToIndex(0);
-    }
-  }, [data?.status, bottomSheetRef]);
+  const [initialRegion, setInitialRegion] = useState({
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0.005,
+    longitudeDelta: 0.005,
+  });
 
   useEffect(() => {
     const fitToCoordinates = (markers: any[]) => {
@@ -51,9 +49,11 @@ export const useMap = ({
         });
       }
     };
+
     const handleStatusChange = async () => {
       try {
         setLoading(true);
+
         let dynamicMarkers: any[] = [];
         if (data?.status === "preparing") {
           dynamicMarkers = [
@@ -71,19 +71,13 @@ export const useMap = ({
             longitude: Number(data.restaurants.longitude),
           });
           setMarkers(dynamicMarkers);
-          if (mapRef.current) {
-            mapRef.current.animateToRegion(
-              {
-                latitude: data.restaurants.latitude - offsetLat,
-                longitude: data.restaurants.longitude,
-                latitudeDelta: 0.005,
-                longitudeDelta: 0.005,
-              },
-              500,
-            );
-          }
-        }
-        if (data?.status === "ready_for_pickup") {
+          setInitialRegion({
+            latitude: Number(data.restaurants.latitude),
+            longitude: Number(data.restaurants.longitude),
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.005,
+          });
+        } else if (data?.status === "ready_for_pickup") {
           dynamicMarkers = [
             ...(candidatesData?.map((candidate: any) => ({
               id: candidate.id,
@@ -93,6 +87,7 @@ export const useMap = ({
               image: icons.marker,
             })) || []),
           ];
+
           if (data?.restaurants?.latitude && data?.restaurants?.longitude) {
             dynamicMarkers.push({
               id: "restaurant",
@@ -101,26 +96,16 @@ export const useMap = ({
               title: data.restaurants.name,
               icon: "restaurant",
             });
-            setDestination(undefined);
-            setOrigin({
-              latitude: Number(data.restaurants.latitude),
-              longitude: Number(data.restaurants.longitude),
-            });
-          }
-          if (data?.latitude && data?.longitude) {
-            dynamicMarkers.push({
-              id: "my-location",
-              title: "Tu ubicacion",
-              latitude: data.latitude,
-              longitude: data.longitude,
-              icon: "pin",
-            });
           }
           setMarkers(dynamicMarkers);
-          fitToCoordinates(dynamicMarkers);
-        }
-        if (data?.status === "in_progress") {
-          const markers: any[] = [
+          setInitialRegion({
+            latitude: Number(data.restaurants.latitude),
+            longitude: Number(data.restaurants.longitude),
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.005,
+          });
+        } else if (data?.status === "in_progress") {
+          dynamicMarkers = [
             {
               id: "restaurant",
               latitude: data.restaurants.latitude,
@@ -129,55 +114,44 @@ export const useMap = ({
               icon: "restaurant",
             },
           ];
+
           if (
             data?.delivery_drivers?.latitude &&
             data?.delivery_drivers?.longitude
           ) {
-            markers.push({
-              id: "Driver",
-              latitude: data.delivery_drivers?.latitude,
-              longitude: data.delivery_drivers?.longitude,
-              title: data.delivery_drivers?.name,
+            dynamicMarkers.push({
+              id: "driver",
+              latitude: data.delivery_drivers.latitude,
+              longitude: data.delivery_drivers.longitude,
+              title: data.delivery_drivers.name,
               image: icons.marker,
             });
           }
-          setDestination({
+          setMarkers(dynamicMarkers);
+          setInitialRegion({
             latitude: Number(data.restaurants.latitude),
             longitude: Number(data.restaurants.longitude),
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.005,
           });
-          setOrigin({
-            latitude: Number(data.delivery_drivers?.latitude),
-            longitude: Number(data.delivery_drivers?.longitude),
-          });
-          setMarkers(markers);
-          fitToCoordinates(markers);
         }
+
+        fitToCoordinates(dynamicMarkers);
       } catch (err) {
-        console.log({ err });
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
+
     handleStatusChange();
-  }, [
-    data?.status,
-    candidatesData,
-    isMapReady,
-    data?.latitude,
-    data?.longitude,
-    data?.restaurants?.latitude,
-    data?.restaurants?.longitude,
-    data?.restaurants?.name,
-    mapRef,
-    data?.delivery_drivers?.latitude,
-    data?.delivery_drivers?.longitude,
-    data?.delivery_drivers?.name,
-  ]);
+  }, [data, candidatesData, isMapReady, mapRef]);
 
   return {
     markers,
     origin,
     destination,
     loading,
+    initialRegion,
   };
 };
