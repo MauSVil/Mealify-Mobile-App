@@ -40,6 +40,24 @@ const MapFollowUp = () => {
     socket.on("message", () => orderQuery.refetch());
   }, [orderId]);
 
+  const fitToCoordinates = (markers: any[]) => {
+    if (mapRef?.current && markers.length > 0) {
+      const coordinates = markers.map((marker) => ({
+        latitude: marker.latitude,
+        longitude: marker.longitude,
+      }));
+      mapRef.current.fitToCoordinates(coordinates, {
+        edgePadding: {
+          top: 150,
+          right: 150,
+          bottom: 350,
+          left: 150,
+        },
+        animated: true,
+      });
+    }
+  };
+
   const { markers, origin, destination, loading, initialRegion } = useMap({
     data: orderQuery.data,
     candidatesData: candidatesQuery.data,
@@ -47,6 +65,7 @@ const MapFollowUp = () => {
 
   useEffect(() => {
     setShouldRender((prevState) => !prevState);
+    fitToCoordinates(markers);
   }, [markers]);
 
   if (
@@ -80,15 +99,9 @@ const MapFollowUp = () => {
           initialRegion={initialRegion}
           style={[{ flex: 1, height: "100%", borderRadius: 15 }]}
           userInterfaceStyle="light"
-          // onMapReady={() => {
-          //   if (origin && destination) {
-          //     mapRef.current?.fitToCoordinates([origin, destination], {
-          //       edgePadding: { top: 150, right: 150, bottom: 150, left: 150 },
-          //     });
-          //   } else {
-          //     mapRef.current?.fitToCoordinates([initialRegion]);
-          //   }
-          // }}
+          onMapReady={() => {
+            fitToCoordinates(markers);
+          }}
           ref={mapRef}
         >
           {markers.map((marker) => (
@@ -126,6 +139,7 @@ const MapFollowUp = () => {
           />
         </MapView>
       </View>
+      {/* {} */}
     </GestureHandlerRootView>
   );
 };
