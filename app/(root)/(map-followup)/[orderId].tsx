@@ -18,6 +18,7 @@ import { useMap } from "./_hooks/useMap";
 import { Ionicons } from "@expo/vector-icons";
 import MapViewDirections from "react-native-maps-directions";
 import InProgress from "./_components/InProgress";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
 const MapFollowUp = () => {
   const mapRef = useRef<MapView>(null);
@@ -152,7 +153,11 @@ const MapFollowUp = () => {
           />
         </MapView>
       </View>
-      {renderBottomSheetContent(orderQuery.data?.status || "pending")}
+      <BottomSheet snapPoints={["35%"]}>
+        <BottomSheetView style={{ flex: 1, padding: 20 }}>
+          {renderBottomSheetContent(orderQuery.data?.status || "pending")}
+        </BottomSheetView>
+      </BottomSheet>
     </GestureHandlerRootView>
   );
 };
