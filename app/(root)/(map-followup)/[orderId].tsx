@@ -22,6 +22,7 @@ import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
 const MapFollowUp = () => {
   const mapRef = useRef<MapView>(null);
+  const bottomSheetRef = useRef<BottomSheet>(null);
   const [_, setShouldRender] = useState(false);
   const { orderId } = useLocalSearchParams();
   const { orderQuery, candidatesQuery } = useOrder(orderId as string);
@@ -65,6 +66,26 @@ const MapFollowUp = () => {
     setShouldRender((prevState) => !prevState);
     fitToCoordinates(markers);
   }, [markers]);
+
+  useEffect(() => {
+    switch (orderQuery.data?.status) {
+      case "pending":
+        bottomSheetRef.current?.snapToIndex(2);
+        break;
+      case "preparing":
+        bottomSheetRef.current?.snapToIndex(2);
+        break;
+      case "ready_for_pickup":
+        bottomSheetRef.current?.snapToIndex(1);
+        break;
+      case "in_progress":
+        bottomSheetRef.current?.snapToIndex(1);
+        break;
+      default:
+        bottomSheetRef.current?.close();
+        break;
+    }
+  }, [orderQuery.data?.status]);
 
   if (
     loading ||
@@ -153,7 +174,7 @@ const MapFollowUp = () => {
           />
         </MapView>
       </View>
-      <BottomSheet snapPoints={["35%"]}>
+      <BottomSheet snapPoints={["35%", "65%"]} index={1}>
         <BottomSheetView style={{ flex: 1, padding: 20 }}>
           {renderBottomSheetContent(orderQuery.data?.status || "pending")}
         </BottomSheetView>
