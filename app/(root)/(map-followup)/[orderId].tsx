@@ -17,6 +17,7 @@ import MapView, { Marker } from "react-native-maps";
 import { useMap } from "./_hooks/useMap";
 import { Ionicons } from "@expo/vector-icons";
 import MapViewDirections from "react-native-maps-directions";
+import InProgress from "./_components/InProgress";
 
 const MapFollowUp = () => {
   const mapRef = useRef<MapView>(null);
@@ -82,6 +83,7 @@ const MapFollowUp = () => {
       pending: null,
       preparing: <RestaurantPreparing data={orderQuery.data} />,
       ready_for_pickup: <ReadyForPickup data={orderQuery.data} />,
+      in_progress: <InProgress data={orderQuery.data} />,
     };
     return (
       components[status] || (

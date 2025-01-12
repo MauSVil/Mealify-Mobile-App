@@ -3,7 +3,7 @@ import { ActivityIndicator, Image, Text, View } from "react-native";
 
 const RestaurantPreparing = ({ data }: { data: any }) => {
   return (
-    <BottomSheet snapPoints={["35%", "65%"]}>
+    <BottomSheet snapPoints={["35%"]}>
       <BottomSheetView style={{ flex: 1, padding: 20 }}>
         <View className="flex flex-row justify-between items-center">
           <Text className="text-2xl font-JakartaExtraBold max-w-[70%]">
