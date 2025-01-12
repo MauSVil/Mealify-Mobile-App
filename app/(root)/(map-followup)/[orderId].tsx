@@ -17,14 +17,16 @@ import socketService from "@/socketService";
 import PendingOrder from "./_components/PendingOrder";
 import RestaurantPreparing from "./_components/RestaurantPreparing";
 import ReadyForPickup from "./_components/ReadyForPickup";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { useMap } from "./_hooks/useMap";
+import { Ionicons } from "@expo/vector-icons";
+import MapViewDirections from "react-native-maps-directions";
 
 const MapFollowUp = () => {
-  const [isMapReady, setIsMapReady] = useState(false);
-  const bottomSheetRef = useRef<BottomSheet>(null);
   const mapRef = useRef<MapView>(null);
+  const [_, setShouldRender] = useState(false);
   const { orderId } = useLocalSearchParams();
+  const { orderQuery, candidatesQuery } = useOrder(orderId as string);
 
   useEffect(() => {
     if (!orderId) {
@@ -38,15 +40,14 @@ const MapFollowUp = () => {
     socket.on("message", () => orderQuery.refetch());
   }, [orderId]);
 
-  const { orderQuery, candidatesQuery } = useOrder(orderId as string);
-
   const { markers, origin, destination, loading, initialRegion } = useMap({
     data: orderQuery.data,
-    isMapReady,
     candidatesData: candidatesQuery.data,
-    mapRef,
-    bottomSheetRef,
   });
+
+  useEffect(() => {
+    setShouldRender((prevState) => !prevState);
+  }, [markers]);
 
   if (
     loading ||
@@ -60,45 +61,6 @@ const MapFollowUp = () => {
       </View>
     );
   }
-
-  const renderBackgroundContent = (status: string) => {
-    const components: Record<string, React.ReactElement> = {
-      pending: (
-        <SafeAreaView className="flex flex-1 justify-center items-center">
-          <Text className="font-Jakarta text-2xl" numberOfLines={2}>
-            Estamos procesando tu pago
-          </Text>
-        </SafeAreaView>
-      ),
-    };
-    return (
-      components[status] || (
-        <Map
-          mapRef={mapRef}
-          markers={markers}
-          onMapReady={() => setIsMapReady(true)}
-          origin={origin}
-          destination={destination}
-          initialRegion={initialRegion}
-        />
-      )
-    );
-  };
-
-  const renderBottomSheetContent = (status: string) => {
-    const components: Record<string, React.ReactElement | null> = {
-      pending: null,
-      preparing: <RestaurantPreparing data={orderQuery.data} />,
-      ready_for_pickup: <ReadyForPickup data={orderQuery.data} />,
-    };
-    return (
-      components[status] || (
-        <Text className="text-center text-gray-600">
-          Estado desconocido: {status}
-        </Text>
-      )
-    );
-  };
 
   return (
     <GestureHandlerRootView>
@@ -114,8 +76,55 @@ const MapFollowUp = () => {
             <Text className="text-base font-JakartaLight">Ayuda</Text>
           </TouchableOpacity>
         </View>
-        {renderBackgroundContent(orderQuery.data.status)}
-        {renderBottomSheetContent(orderQuery.data.status)}
+        <MapView
+          initialRegion={initialRegion}
+          style={[{ flex: 1, height: "100%", borderRadius: 15 }]}
+          userInterfaceStyle="light"
+          // onMapReady={() => {
+          //   if (origin && destination) {
+          //     mapRef.current?.fitToCoordinates([origin, destination], {
+          //       edgePadding: { top: 150, right: 150, bottom: 150, left: 150 },
+          //     });
+          //   } else {
+          //     mapRef.current?.fitToCoordinates([initialRegion]);
+          //   }
+          // }}
+          ref={mapRef}
+        >
+          {markers.map((marker) => (
+            <Marker
+              key={marker.id}
+              coordinate={{
+                latitude: marker.latitude,
+                longitude: marker.longitude,
+              }}
+              title={marker.title || ""}
+              image={marker.image}
+            >
+              {marker.icon && (
+                <Ionicons
+                  name={marker.icon}
+                  size={24}
+                  color="#000"
+                  style={{ marginBottom: 20 }}
+                />
+              )}
+            </Marker>
+          ))}
+          <MapViewDirections
+            origin={origin}
+            destination={destination}
+            apikey={process.env.EXPO_PUBLIC_GOOGLE_API_KEY!}
+            strokeColor="#0286FF"
+            strokeWidth={4}
+            resetOnChange
+            onReady={() => {
+              setTimeout(() => {
+                setShouldRender((prevState) => !prevState);
+              }, 100);
+            }}
+          />
+        </MapView>
       </View>
     </GestureHandlerRootView>
   );
