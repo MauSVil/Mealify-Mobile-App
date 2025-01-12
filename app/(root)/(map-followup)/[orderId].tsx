@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import Map from "@/components/Map";
 import {
   ActivityIndicator,
   Image,
-  SafeAreaView,
   Text,
   TouchableOpacity,
   View,
@@ -11,10 +9,8 @@ import {
 import { icons } from "@/constants";
 import { router, useLocalSearchParams } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { useOrder } from "./_hooks/useOrder";
 import socketService from "@/socketService";
-import PendingOrder from "./_components/PendingOrder";
 import RestaurantPreparing from "./_components/RestaurantPreparing";
 import ReadyForPickup from "./_components/ReadyForPickup";
 import MapView, { Marker } from "react-native-maps";
