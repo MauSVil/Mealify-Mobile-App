@@ -81,6 +81,21 @@ const MapFollowUp = () => {
     );
   }
 
+  const renderBottomSheetContent = (status: string) => {
+    const components: Record<string, React.ReactElement | null> = {
+      pending: null,
+      preparing: <RestaurantPreparing data={orderQuery.data} />,
+      ready_for_pickup: <ReadyForPickup data={orderQuery.data} />,
+    };
+    return (
+      components[status] || (
+        <Text className="text-center text-gray-600">
+          Estado desconocido: {status}
+        </Text>
+      )
+    );
+  };
+
   return (
     <GestureHandlerRootView>
       <View className="flex-1 relative">
@@ -139,7 +154,7 @@ const MapFollowUp = () => {
           />
         </MapView>
       </View>
-      {/* {} */}
+      {renderBottomSheetContent(orderQuery.data?.status || "pending")}
     </GestureHandlerRootView>
   );
 };
