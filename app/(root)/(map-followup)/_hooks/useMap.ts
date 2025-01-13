@@ -84,7 +84,6 @@ export const useMap = ({
         longitude: data.restaurants.longitude,
         title: data.restaurants.name,
         icon: "restaurant",
-        image: null,
       },
     ];
 
@@ -94,8 +93,7 @@ export const useMap = ({
         latitude: data.delivery_drivers.latitude,
         longitude: data.delivery_drivers.longitude,
         title: data.delivery_drivers.name,
-        image: icons.marker,
-        icon: "null",
+        icon: "car",
       });
     }
     setMarkers(dynamicMarkers);

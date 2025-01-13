@@ -11,11 +11,11 @@ const OrderCard = (props: { order: any }) => {
       className="mb-4 bg-neutral-100 rounded-md flex-row flex gap-3 justify-between"
       onPress={() => router.push(`/(root)/(map-followup)/${order.id}`)}
     >
-      <View className="flex flex-col gap-1 px-6 py-4 w-1/2">
+      <View className="flex flex-col gap-1 px-6 py-4 w-2/3">
         <Text className="font-JakartaBold text-lg" numberOfLines={1}>
           {order?.restaurants?.name}
         </Text>
-        <View className="flex-row gap-1">
+        <View className="flex-row gap-1 flex-wrap">
           <Text className="text-sm font-JakartaSemiBold text-neutral-500">
             Fecha de creación:
           </Text>
@@ -34,7 +34,7 @@ const OrderCard = (props: { order: any }) => {
       </View>
       <Image
         source={{ uri: order.restaurants?.hero_image_min }}
-        className="h-full w-1/3 bg-red-200"
+        className="h-full w-1/3 bg-gray-300"
       />
     </TouchableOpacity>
   );

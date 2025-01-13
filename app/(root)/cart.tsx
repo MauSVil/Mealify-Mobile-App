@@ -18,6 +18,8 @@ import { useApi } from "@/lib/api";
 import { useUser } from "@clerk/clerk-expo";
 import { useLocationStore } from "@/store/locationStore";
 
+const ptgs = [5, 10, 13, 15];
+
 const Cart = () => {
   const api = useApi();
   const { user } = useUser();
@@ -26,6 +28,8 @@ const Cart = () => {
   const { initPaymentSheet, presentPaymentSheet, loading } = usePaymentSheet();
   const { userLatitude, userLongitude } = useLocationStore();
   const [paymentIntent, setPaymentIntent] = useState("");
+
+  const [deliveryPtg, setDeliveryPtg] = useState(10);
 
   const total = Object.values(cart).reduce(
     (acc, { price, quantity }) => acc + price * quantity,
@@ -103,16 +107,31 @@ const Cart = () => {
         <FlatList
           className="mx-10 py-5"
           ListHeaderComponent={
-            <View className="w-full justify-between flex flex-row items-center mb-10">
-              <Text className="text-3xl font-JakartaExtraBold">Carrito</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  clearCart();
-                  router.dismiss();
-                }}
-              >
-                <Text>Limpiar</Text>
-              </TouchableOpacity>
+            <View className="w-full mb-5 flex flex-col gap-5">
+              <View className="w-full justify-between flex flex-row items-center">
+                <Text className="text-3xl font-JakartaExtraBold">Carrito</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    clearCart();
+                    router.dismiss();
+                  }}
+                >
+                  <Text>Limpiar</Text>
+                </TouchableOpacity>
+              </View>
+              <View className="flex flex-col gap-2">
+                <Text className="text-xl font-JakartaRegular">Propina: </Text>
+                <View className="flex flex-row gap-2">
+                  {ptgs.map((ptg) => (
+                    <TouchableOpacity
+                      onPress={() => setDeliveryPtg(ptg)}
+                      className={`rounded-xl px-2 py-1 h-10 bg-general-300 flex items-center justify-center ${deliveryPtg === ptg && "border-2 border-blue-600"}`}
+                    >
+                      <Text>{ptg}%</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
             </View>
           }
           data={Object.values(cart)}

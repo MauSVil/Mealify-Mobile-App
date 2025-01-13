@@ -9,8 +9,17 @@ import { useLocationStore } from "@/store/locationStore";
 import { useAddresses } from "./_hooks/useAddresses";
 
 const Address = () => {
-  const { userAddress, setUserLocation, setSelected, selected } =
-    useLocationStore();
+  const {
+    userLatitude,
+    userLongitude,
+    userAddress,
+    setUserLocation,
+    setSelected,
+    selected,
+    geoLatitude,
+    geoLongitude,
+    geoAddress,
+  } = useLocationStore();
 
   const { getAddressesQuery, addAddressMutation, deleteAddressMutation } =
     useAddresses();
@@ -59,6 +68,35 @@ const Address = () => {
           router.dismiss();
         }}
       />
+      <Text className="text-xl font-JakartaBold mt-8 mb-2">
+        Tu ubicación actual
+      </Text>
+      <TouchableOpacity
+        className={`flex-row items-center p-4 bg-white rounded-lg mb-4 gap-2 shadow-sm shadow-neutral-400/70 ${userLatitude === geoLatitude && userLongitude === geoLongitude && "border-primary-500 border-[1px]"}`}
+        onPress={() => {
+          setUserLocation({
+            latitude: geoLatitude!,
+            longitude: geoLongitude!,
+            address: geoAddress!,
+          });
+          setSelected(null);
+          router.dismiss();
+        }}
+      >
+        <Image source={icons.target} className="w-6 h-6" />
+        <View className="flex-1">
+          <Text className="text-neutral-900" numberOfLines={2}>
+            {geoAddress}
+          </Text>
+          <Text className="text-neutral-500">
+            {geoLatitude}, {geoLongitude}
+          </Text>
+        </View>
+      </TouchableOpacity>
+
+      <Text className="text-xl font-JakartaBold mb-2">
+        Ubicaciones guardadas
+      </Text>
       <FlatList
         data={getAddressesQuery.data || []}
         keyExtractor={(_, index) => index.toString()}
