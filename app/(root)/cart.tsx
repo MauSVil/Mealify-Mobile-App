@@ -36,12 +36,14 @@ const Cart = () => {
     0,
   );
 
+  console.log(total + (total * deliveryPtg) / 100);
+
   const initializePaymentSheet = async () => {
     try {
       setReady(false);
       const { data } = await api.post("/payments/fetch-params", {
         email: user?.emailAddresses[0].emailAddress!,
-        amount: total,
+        amount: total + (total * deliveryPtg) / 100,
         restaurant: Object.values(cart)[0].restaurant_id,
         userLatitude,
         userLongitude,
@@ -124,6 +126,7 @@ const Cart = () => {
                 <View className="flex flex-row gap-2">
                   {ptgs.map((ptg) => (
                     <TouchableOpacity
+                      key={ptg}
                       onPress={() => setDeliveryPtg(ptg)}
                       className={`rounded-xl px-2 py-1 h-10 bg-general-300 flex items-center justify-center ${deliveryPtg === ptg && "border-2 border-blue-600"}`}
                     >
