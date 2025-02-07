@@ -19,6 +19,8 @@ import { Ionicons } from "@expo/vector-icons";
 import MapViewDirections from "react-native-maps-directions";
 import InProgress from "./_components/InProgress";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import PendingOrder from "./_components/PendingOrder";
+import RestaurantDelayed from "./_components/RestaurantDelayed";
 
 const MapFollowUp = () => {
   const mapRef = useRef<MapView>(null);
@@ -34,7 +36,7 @@ const MapFollowUp = () => {
     }
     const socket = socketService.getSocket();
     if (!socket) return;
-    socketService.joinRoom(orderId as string);
+    socketService.joinRoom(`order_${orderId}`);
 
     socket.on("message", () => orderQuery.refetch());
   }, [orderId]);
@@ -102,7 +104,8 @@ const MapFollowUp = () => {
 
   const renderBottomSheetContent = (status: string) => {
     const components: Record<string, React.ReactElement | null> = {
-      pending: null,
+      pending: <PendingOrder />,
+      restaurant_delayed: <RestaurantDelayed />,
       preparing: <RestaurantPreparing data={orderQuery.data} />,
       ready_for_pickup: <ReadyForPickup data={orderQuery.data} />,
       in_progress: <InProgress data={orderQuery.data} />,

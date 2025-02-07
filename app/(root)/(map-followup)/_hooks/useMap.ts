@@ -115,6 +115,8 @@ export const useMap = ({
 
   useEffect(() => {
     if (
+      data?.status !== "pending" &&
+      data?.status !== "restaurant_delayed" &&
       data?.status !== "preparing" &&
       data?.status !== "ready_for_pickup" &&
       data?.status !== "in_progress"
@@ -124,6 +126,7 @@ export const useMap = ({
       try {
         setLoading(true);
         switch (data?.status) {
+          case "pending":
           case "preparing":
             await handlePreparingStatus();
             break;

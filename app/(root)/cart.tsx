@@ -36,19 +36,18 @@ const Cart = () => {
     0,
   );
 
-  console.log(total + (total * deliveryPtg) / 100);
-
   const initializePaymentSheet = async () => {
     try {
       setReady(false);
       const { data } = await api.post("/payments/fetch-params", {
         email: user?.emailAddresses[0].emailAddress!,
-        amount: total + (total * deliveryPtg) / 100,
+        amount: total,
         restaurant: Object.values(cart)[0].restaurant_id,
         userLatitude,
         userLongitude,
         clerkId: user?.id,
         cart,
+        deliveryPtg,
       });
       const { paymentIntent, paymentIntentId, ephemeralKey, customer } = data;
 
