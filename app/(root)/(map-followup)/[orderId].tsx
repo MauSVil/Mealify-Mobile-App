@@ -104,7 +104,7 @@ const MapFollowUp = () => {
 
   const renderBottomSheetContent = (status: string) => {
     const components: Record<string, React.ReactElement | null> = {
-      pending: <PendingOrder />,
+      pending: <PendingOrder data={orderQuery.data} />,
       restaurant_delayed: <RestaurantDelayed />,
       preparing: <RestaurantPreparing data={orderQuery.data} />,
       ready_for_pickup: <ReadyForPickup data={orderQuery.data} />,
