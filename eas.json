@@ -1,0 +1,44 @@
+{
+  "cli": {
+    "version": ">= 13.4.2",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_aGVscGVkLWtvaS05LmNsZXJrLmFjY291bnRzLmRldiQ",
+        "EXPO_PUBLIC_GOOGLE_API_KEY": "AIzaSyATCg6_x5urmpFlX43690pyiqcNQjKmG5s",
+        "EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY": "pk_test_51QZ127BV9Ssjkt8CDD9ItTLsYfKNLGoysndPkhWkuTtPc5QgqlsGr9TpBAnQaTnEEX4GeENYN7eojTJUFMmz0bZA0091VEfYa2",
+        "EXPO_PUBLIC_SERVER_URL": "https://mealify-backv2.mausvil.dev"
+      }
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "ios": {
+        "distribution": "store",
+        "autoIncrement": true
+      },
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      },
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_aGVscGVkLWtvaS05LmNsZXJrLmFjY291bnRzLmRldiQ",
+        "EXPO_PUBLIC_GOOGLE_API_KEY": "AIzaSyATCg6_x5urmpFlX43690pyiqcNQjKmG5s",
+        "EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY": "pk_test_51QZ127BV9Ssjkt8CDD9ItTLsYfKNLGoysndPkhWkuTtPc5QgqlsGr9TpBAnQaTnEEX4GeENYN7eojTJUFMmz0bZA0091VEfYa2",
+        "EXPO_PUBLIC_SERVER_URL": "https://mealify-backv2.mausvil.dev"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "maudev96@gmail.com"
+      }
+    }
+  }
+}
