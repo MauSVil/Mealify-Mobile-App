@@ -7,6 +7,7 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "channel": "development",
       "env": {
         "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_aGVscGVkLWtvaS05LmNsZXJrLmFjY291bnRzLmRldiQ",
         "EXPO_PUBLIC_GOOGLE_API_KEY": "AIzaSyATCg6_x5urmpFlX43690pyiqcNQjKmG5s",
@@ -15,17 +16,19 @@
       }
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "channel": "preview"
     },
     "production": {
       "ios": {
         "distribution": "store",
-        "autoIncrement": true
+        "autoIncrement": "buildNumber"
       },
       "android": {
-        "gradleCommand": ":app:assembleRelease"
+        "gradleCommand": ":app:assembleRelease",
+        "autoIncrement": "versionCode"
       },
-      "autoIncrement": true,
+      "channel": "production",
       "env": {
         "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_aGVscGVkLWtvaS05LmNsZXJrLmFjY291bnRzLmRldiQ",
         "EXPO_PUBLIC_GOOGLE_API_KEY": "AIzaSyATCg6_x5urmpFlX43690pyiqcNQjKmG5s",

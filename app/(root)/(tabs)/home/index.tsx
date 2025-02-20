@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRestaurants } from "./_hooks/useRestaurants";
 import { icons } from "@/constants";
 import RestaurantsFlatList from "@/components/RestaurantsFlatList";
 import InputField from "@/components/InputField";
@@ -19,6 +18,7 @@ import { router } from "expo-router";
 import * as Location from "expo-location";
 import { useLocationStore } from "@/store/locationStore";
 import { Ionicons } from "@expo/vector-icons";
+import { useRestaurants } from "@/hooks/useRestaurants";
 
 const Home = () => {
   const { setGeoLocation, setUserLocation, userAddress, selected } =

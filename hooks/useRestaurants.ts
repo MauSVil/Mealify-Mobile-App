@@ -1,6 +1,6 @@
-import { useApi } from "@/lib/api";
+import { useApi } from "../lib/api";
 import _ from "lodash";
-import { useLocationStore } from "@/store/locationStore";
+import { useLocationStore } from "../store/locationStore";
 import { useQuery } from "@tanstack/react-query";
 
 export const useRestaurants = (category?: string) => {

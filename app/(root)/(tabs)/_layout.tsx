@@ -21,24 +21,26 @@ const TabIcon = ({
 const Layout = () => {
   return (
     <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: "white",
-        tabBarInactiveTintColor: "white",
-        tabBarShowLabel: false,
-        tabBarStyle: {
-          backgroundColor: "#333333",
-          borderRadius: 50,
-          overflow: "hidden",
-          marginHorizontal: 20,
-          marginBottom: 20,
-          height: 70,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexDirection: "row",
-          position: "absolute",
-        },
-      }}
+      screenOptions={
+        {
+          // tabBarActiveTintColor: "white",
+          // tabBarInactiveTintColor: "white",
+          // tabBarShowLabel: false,
+          // tabBarStyle: {
+          //   backgroundColor: "#333333",
+          //   borderRadius: 50,
+          //   overflow: "hidden",
+          //   marginHorizontal: 20,
+          //   marginBottom: 20,
+          //   height: 70,
+          //   display: "flex",
+          //   justifyContent: "space-between",
+          //   alignItems: "center",
+          //   flexDirection: "row",
+          //   position: "absolute",
+          // },
+        }
+      }
     >
       <Tabs.Screen
         name="home/index"

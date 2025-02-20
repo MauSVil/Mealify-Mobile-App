@@ -1,8 +1,8 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatList, RefreshControl, StatusBar, Text, View } from "react-native";
-import { useOrders } from "./_hooks/useOrders";
 import OrderCard from "@/components/OrderCard";
 import { useMemo } from "react";
+import { useOrders } from "@/hooks/useOrders";
 
 const OrdersScreen = () => {
   const { ordersQuery } = useOrders();
