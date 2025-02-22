@@ -3,15 +3,15 @@ import _ from "lodash";
 import { useLocationStore } from "../store/locationStore";
 import { useQuery } from "@tanstack/react-query";
 
-export const useRestaurants = (category?: string) => {
+export const useRestaurants = (category?: string, query?: string) => {
   const api = useApi();
   const { userLatitude, userLongitude } = useLocationStore();
 
   const restaurantsQuery = useQuery<Record<string, any[]>>({
-    queryKey: ["restaurants", userLatitude, userLongitude],
+    queryKey: ["restaurants", userLatitude, userLongitude, query],
     queryFn: async () => {
       const { data } = await api.get(
-        `/restaurants/${userLatitude}/${userLongitude}`,
+        `/restaurants/${userLatitude}/${userLongitude}/${query || "all"}`,
       );
 
       const restaurantsByCategory = _.groupBy(data, "category");

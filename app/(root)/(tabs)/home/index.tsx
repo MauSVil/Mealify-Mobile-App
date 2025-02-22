@@ -19,13 +19,18 @@ import * as Location from "expo-location";
 import { useLocationStore } from "@/store/locationStore";
 import { Ionicons } from "@expo/vector-icons";
 import { useRestaurants } from "@/hooks/useRestaurants";
+import { useDebounce } from "@uidotdev/usehooks";
 
 const Home = () => {
   const { setGeoLocation, setUserLocation, userAddress, selected } =
     useLocationStore();
-  const { restaurantsQuery } = useRestaurants();
   const [isTextHidden, setIsTextHidden] = useState(false);
   const [hasPermissions, setHasPermissions] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+  const { restaurantsQuery } = useRestaurants("", debouncedSearchTerm);
 
   const { cart } = cartStore();
 
@@ -103,11 +108,13 @@ const Home = () => {
         <View className="w-full flex-row gap-4 items-center justify-between">
           <InputField
             icon={icons.search}
-            keyboardAvoidingViewClassName="w-3/4"
+            keyboardAvoidingViewClassName="w-full"
             placeholder="Buscar restaurantes"
             containerStyle="border-general-100 bg-red-300"
             onFocus={() => setIsTextHidden(true)}
             onBlur={() => setIsTextHidden(false)}
+            onChangeText={setSearchTerm}
+            autoComplete="off"
           />
           {isTextHidden && (
             <TouchableOpacity

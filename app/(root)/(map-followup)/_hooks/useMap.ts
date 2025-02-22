@@ -54,7 +54,7 @@ export const useMap = ({
         latitude: candidate.latitude,
         longitude: candidate.longitude,
         title: candidate.name,
-        image: icons.marker,
+        icon: "car",
       })) || []),
     ];
 
