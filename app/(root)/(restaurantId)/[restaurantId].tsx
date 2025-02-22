@@ -1,6 +1,5 @@
 import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import React from "react";
-import { icons } from "@/constants";
 import { router, useLocalSearchParams } from "expo-router";
 import ProductCard from "@/components/ProductCard";
 import { useRestaurant } from "./_hooks/useRestaurant";
@@ -37,26 +36,26 @@ const RestaurantScreen = () => {
       />
       <View className="h-14 w-full" />
 
-      <View className="flex-1 w-full px-10">
+      <View className="mb-7">
+        <Text
+          className="font-JakartaExtraBold text-2xl text-center"
+          numberOfLines={1}
+        >
+          {restaurantInfo?.name}
+        </Text>
+        <Text
+          className="font-Jakarta text-xl text-general-200 text-center"
+          numberOfLines={2}
+        >
+          {restaurantInfo?.phone}
+        </Text>
+      </View>
+
+      <View className="flex-1 w-full px-7 mb-7">
         <FlatList
           data={productsQuery.data || []}
           renderItem={({ item }) => <ProductCard item={item} />}
-          ListHeaderComponent={
-            <View className="mb-10">
-              <Text
-                className="font-JakartaExtraBold text-2xl"
-                numberOfLines={1}
-              >
-                {restaurantInfo?.name}
-              </Text>
-              <Text
-                className="font-Jakarta text-xl text-general-200"
-                numberOfLines={2}
-              >
-                {restaurantInfo?.phone}
-              </Text>
-            </View>
-          }
+          ListFooterComponent={<View className="h-20" />}
         />
       </View>
     </View>
