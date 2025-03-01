@@ -14,6 +14,7 @@ export const cartStore = create<CartStore>((set, get) => ({
   },
   removeProduct: (id) => {
     const cart = get().cart;
+
     if (cart[id].quantity === 1) {
       delete cart[id];
     } else {

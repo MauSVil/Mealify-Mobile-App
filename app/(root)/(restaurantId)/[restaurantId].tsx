@@ -6,13 +6,15 @@ import {
   FlatList,
   ScrollView,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import ProductCard from "@/components/ProductCard";
 import { useRestaurant } from "./_hooks/useRestaurant";
 import { Ionicons } from "@expo/vector-icons";
 import { TabView, SceneMap } from "react-native-tab-view";
 import Animated from "react-native-reanimated";
+import CartToast from "@/components/CartToast";
+import { cartStore } from "@/store/cartStore";
 
 const translations: { [key: string]: string } = {
   meals: "Comidas",
@@ -106,119 +108,135 @@ const RestaurantScreen = () => {
   );
 
   const [index, setIndex] = useState(0);
+  const [showToast, setShowToast] = useState(false);
+
+  const { cart } = cartStore();
+  const total = Object.keys(cart).reduce((acc, key) => {
+    return acc + cart[key].quantity;
+  }, 0);
+
+  useEffect(() => {
+    setShowToast(total > 0);
+    const timer = setTimeout(() => {
+      setShowToast(false);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [total]);
 
   const restaurantInfo = singleRestaurantQuery.data;
 
-  const renderScene = SceneMap({
-    meals: () => (
-      <View className="mt-6">
-        <FlatList
-          data={(productsQuery.data || []).filter(
-            (product: any) => product.group === "meals",
-          )}
-          renderItem={({ item }) => <ProductCard item={item} />}
-          ListFooterComponent={<View className="h-20" />}
-          ListEmptyComponent={
-            <View className="flex-1 items-center justify-center">
-              <Text className="font-Jakarta text-xl text-general-200">
-                No hay productos disponibles
-              </Text>
-            </View>
-          }
-        />
-      </View>
-    ),
-    breakfasts: () => (
-      <View className="mt-6">
-        <FlatList
-          data={(productsQuery.data || []).filter(
-            (product: any) => product.group === "breakfasts",
-          )}
-          renderItem={({ item }) => <ProductCard item={item} />}
-          ListFooterComponent={<View className="h-20" />}
-          ListEmptyComponent={
-            <View className="flex-1 items-center justify-center">
-              <Text className="font-Jakarta text-xl text-general-200">
-                No hay productos disponibles
-              </Text>
-            </View>
-          }
-        />
-      </View>
-    ),
-    dinners: () => (
-      <View className="mt-6">
-        <FlatList
-          data={(productsQuery.data || []).filter(
-            (product: any) => product.group === "dinners",
-          )}
-          renderItem={({ item }) => <ProductCard item={item} />}
-          ListFooterComponent={<View className="h-20" />}
-          ListEmptyComponent={
-            <View className="flex-1 items-center justify-center">
-              <Text className="font-Jakarta text-xl text-general-200">
-                No hay productos disponibles
-              </Text>
-            </View>
-          }
-        />
-      </View>
-    ),
-    desserts: () => (
-      <View className="mt-6">
-        <FlatList
-          data={(productsQuery.data || []).filter(
-            (product: any) => product.group === "desserts",
-          )}
-          renderItem={({ item }) => <ProductCard item={item} />}
-          ListFooterComponent={<View className="h-20" />}
-          ListEmptyComponent={
-            <View className="flex-1 items-center justify-center">
-              <Text className="font-Jakarta text-xl text-general-200">
-                No hay productos disponibles
-              </Text>
-            </View>
-          }
-        />
-      </View>
-    ),
-    drinks: () => (
-      <View className="mt-6">
-        <FlatList
-          data={(productsQuery.data || []).filter(
-            (product: any) => product.group === "drinks",
-          )}
-          renderItem={({ item }) => <ProductCard item={item} />}
-          ListFooterComponent={<View className="h-20" />}
-          ListEmptyComponent={
-            <View className="flex-1 items-center justify-center">
-              <Text className="font-Jakarta text-xl text-general-200">
-                No hay productos disponibles
-              </Text>
-            </View>
-          }
-        />
-      </View>
-    ),
-    others: () => (
-      <View className="mt-6">
-        <FlatList
-          data={(productsQuery.data || []).filter(
-            (product: any) => product.group === "others",
-          )}
-          renderItem={({ item }) => <ProductCard item={item} />}
-          ListFooterComponent={<View className="h-20" />}
-          ListEmptyComponent={
-            <View className="flex-1 items-center justify-center">
-              <Text className="font-Jakarta text-xl text-general-200">
-                No hay productos disponibles
-              </Text>
-            </View>
-          }
-        />
-      </View>
-    ),
-  });
+  const renderScene = useMemo(() => {
+    return SceneMap({
+      meals: () => (
+        <View className="mt-6">
+          <FlatList
+            data={(productsQuery.data || []).filter(
+              (product: any) => product.group === "meals",
+            )}
+            renderItem={({ item }) => <ProductCard item={item} />}
+            ListFooterComponent={<View className="h-20" />}
+            ListEmptyComponent={
+              <View className="flex-1 items-center justify-center">
+                <Text className="font-Jakarta text-xl text-general-200">
+                  No hay productos disponibles
+                </Text>
+              </View>
+            }
+          />
+        </View>
+      ),
+      breakfasts: () => (
+        <View className="mt-6">
+          <FlatList
+            data={(productsQuery.data || []).filter(
+              (product: any) => product.group === "breakfasts",
+            )}
+            renderItem={({ item }) => <ProductCard item={item} />}
+            ListFooterComponent={<View className="h-20" />}
+            ListEmptyComponent={
+              <View className="flex-1 items-center justify-center">
+                <Text className="font-Jakarta text-xl text-general-200">
+                  No hay productos disponibles
+                </Text>
+              </View>
+            }
+          />
+        </View>
+      ),
+      dinners: () => (
+        <View className="mt-6">
+          <FlatList
+            data={(productsQuery.data || []).filter(
+              (product: any) => product.group === "dinners",
+            )}
+            renderItem={({ item }) => <ProductCard item={item} />}
+            ListFooterComponent={<View className="h-20" />}
+            ListEmptyComponent={
+              <View className="flex-1 items-center justify-center">
+                <Text className="font-Jakarta text-xl text-general-200">
+                  No hay productos disponibles
+                </Text>
+              </View>
+            }
+          />
+        </View>
+      ),
+      desserts: () => (
+        <View className="mt-6">
+          <FlatList
+            data={(productsQuery.data || []).filter(
+              (product: any) => product.group === "desserts",
+            )}
+            renderItem={({ item }) => <ProductCard item={item} />}
+            ListFooterComponent={<View className="h-20" />}
+            ListEmptyComponent={
+              <View className="flex-1 items-center justify-center">
+                <Text className="font-Jakarta text-xl text-general-200">
+                  No hay productos disponibles
+                </Text>
+              </View>
+            }
+          />
+        </View>
+      ),
+      drinks: () => (
+        <View className="mt-6">
+          <FlatList
+            data={(productsQuery.data || []).filter(
+              (product: any) => product.group === "drinks",
+            )}
+            renderItem={({ item }) => <ProductCard item={item} />}
+            ListFooterComponent={<View className="h-20" />}
+            ListEmptyComponent={
+              <View className="flex-1 items-center justify-center">
+                <Text className="font-Jakarta text-xl text-general-200">
+                  No hay productos disponibles
+                </Text>
+              </View>
+            }
+          />
+        </View>
+      ),
+      others: () => (
+        <View className="mt-6">
+          <FlatList
+            data={(productsQuery.data || []).filter(
+              (product: any) => product.group === "others",
+            )}
+            renderItem={({ item }) => <ProductCard item={item} />}
+            ListFooterComponent={<View className="h-20" />}
+            ListEmptyComponent={
+              <View className="flex-1 items-center justify-center">
+                <Text className="font-Jakarta text-xl text-general-200">
+                  No hay productos disponibles
+                </Text>
+              </View>
+            }
+          />
+        </View>
+      ),
+    });
+  }, [productsQuery.data]);
 
   return (
     <View className="flex-1 items-center bg-general-500 relative">
@@ -267,6 +285,14 @@ const RestaurantScreen = () => {
           renderTabBar={(props) => <CustomTabBar {...props} />}
         />
       </View>
+
+      {showToast && (
+        <CartToast
+          count={total}
+          onPress={() => router.push("/cart")}
+          onClose={() => {}}
+        />
+      )}
     </View>
   );
 };

@@ -18,7 +18,7 @@ import { useApi } from "@/lib/api";
 import { useUser } from "@clerk/clerk-expo";
 import { useLocationStore } from "@/store/locationStore";
 
-const ptgs = [5, 10, 13, 15];
+const ptgs = [0, 5, 10, 13, 15];
 
 const Cart = () => {
   const api = useApi();
