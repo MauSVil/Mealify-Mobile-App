@@ -7,7 +7,7 @@ import {
   Platform,
   Keyboard,
 } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import { InputFieldProps } from "@/types/type";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -23,6 +23,8 @@ const InputField = ({
   className,
   ...rest
 }: InputFieldProps) => {
+  const inputRef = useRef<TextInput>(null);
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -36,10 +38,12 @@ const InputField = ({
             </Text>
           )}
           <View
-            className={`flex flex-row justify-start items-center relative bg-neutral-100 rounded-full border border-neutral-100 focus:border-primary-500 w-full`}
+            className={`flex flex-row justify-start items-center relative bg-neutral-100 rounded-full border border-neutral-100 focus:border-primary-500 w-full px-4`}
+            onTouchStart={() => inputRef.current?.focus()}
           >
             {icon && <Ionicons name="search" size={22} color="black" />}
             <TextInput
+              ref={inputRef}
               className={`rounded-full p-4 font-JakartaSemiBold text-[15px] ${inputStyle} text-left`}
               secureTextEntry={secureTextEntry}
               {...rest}

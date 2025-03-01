@@ -1,4 +1,3 @@
-import { icons } from "@/constants";
 import { useEffect, useState } from "react";
 
 export const useMap = ({
@@ -128,6 +127,7 @@ export const useMap = ({
         switch (data?.status) {
           case "pending":
           case "preparing":
+          case "restaurant_delayed":
             await handlePreparingStatus();
             break;
           case "ready_for_pickup":

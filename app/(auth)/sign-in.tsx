@@ -44,7 +44,7 @@ const SignUp = () => {
             resizeMode="cover"
           />
           <Text className="text-2xl absolute bottom-5 left-5 text-black font-JakartaSemiBold">
-            Welcome 👋
+            Bienvenido 👋
           </Text>
         </View>
         <View className="p-5">

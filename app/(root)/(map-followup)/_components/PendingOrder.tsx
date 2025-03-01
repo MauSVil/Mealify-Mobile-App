@@ -1,4 +1,10 @@
-import { View, Text, ActivityIndicator, Image } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 
 const PendingOrder = ({ data }: { data: any }) => {
@@ -28,6 +34,11 @@ const PendingOrder = ({ data }: { data: any }) => {
           className="flex-1 h-24 rounded-md opacity-85"
         />
       </View>
+      <TouchableOpacity className="bg-red-500 p-3 rounded-2xl items-center justify-center mt-8">
+        <Text className="text-white text-base font-JakartaBold">
+          Cancelar pedido
+        </Text>
+      </TouchableOpacity>
     </>
   );
 };

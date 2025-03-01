@@ -1,16 +1,224 @@
-import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+} from "react-native";
+import React, { useRef, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import ProductCard from "@/components/ProductCard";
 import { useRestaurant } from "./_hooks/useRestaurant";
 import { Ionicons } from "@expo/vector-icons";
+import { TabView, SceneMap } from "react-native-tab-view";
+import Animated from "react-native-reanimated";
+
+const translations: { [key: string]: string } = {
+  meals: "Comidas",
+  breakfasts: "Desayunos",
+  dinners: "Cenas",
+  desserts: "Postres",
+  drinks: "Bebidas",
+  others: "Otros",
+};
+
+const routes = [
+  "meals",
+  "breakfasts",
+  "dinners",
+  "desserts",
+  "drinks",
+  "others",
+].map((title) => ({
+  key: title,
+  title: translations[title],
+}));
+
+const CustomTabBar = (props: any) => {
+  const { navigationState, jumpTo } = props;
+  const scrollViewRef = useRef<ScrollView>(null);
+  const tabPositions = useRef<{ [key: string]: number }>({});
+
+  const handleTabPress = (routeKey: string, index: number) => {
+    jumpTo(routeKey);
+
+    if (scrollViewRef.current) {
+      const position = tabPositions.current[routeKey] || 0;
+      scrollViewRef.current.scrollTo({
+        x: position - 100,
+        animated: true,
+      });
+    }
+  };
+
+  return (
+    <View style={{ height: 40 }}>
+      <ScrollView
+        ref={scrollViewRef}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: 10 }}
+      >
+        {navigationState.routes.map((route: any, index: number) => {
+          const isActive = navigationState.index === index;
+
+          return (
+            <TouchableOpacity
+              key={route.key}
+              className="mr-6"
+              onPress={() => handleTabPress(route.key, index)}
+              onLayout={(event) => {
+                const layout = event.nativeEvent.layout;
+                tabPositions.current[route.key] = layout.x;
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: "Jakarta",
+                  fontSize: 16,
+                  fontWeight: isActive ? "bold" : "normal",
+                  color: isActive ? "black" : "gray",
+                }}
+              >
+                {route.title}
+              </Text>
+              <Animated.View
+                style={{
+                  height: 2,
+                  backgroundColor: isActive ? "black" : "transparent",
+                  width: "100%",
+                  marginTop: 4,
+                }}
+              />
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+    </View>
+  );
+};
 
 const RestaurantScreen = () => {
   const { restaurantId } = useLocalSearchParams();
   const { singleRestaurantQuery, productsQuery } = useRestaurant(
     Number(restaurantId),
   );
+
+  const [index, setIndex] = useState(0);
+
   const restaurantInfo = singleRestaurantQuery.data;
+
+  const renderScene = SceneMap({
+    meals: () => (
+      <View className="mt-6">
+        <FlatList
+          data={(productsQuery.data || []).filter(
+            (product: any) => product.group === "meals",
+          )}
+          renderItem={({ item }) => <ProductCard item={item} />}
+          ListFooterComponent={<View className="h-20" />}
+          ListEmptyComponent={
+            <View className="flex-1 items-center justify-center">
+              <Text className="font-Jakarta text-xl text-general-200">
+                No hay productos disponibles
+              </Text>
+            </View>
+          }
+        />
+      </View>
+    ),
+    breakfasts: () => (
+      <View className="mt-6">
+        <FlatList
+          data={(productsQuery.data || []).filter(
+            (product: any) => product.group === "breakfasts",
+          )}
+          renderItem={({ item }) => <ProductCard item={item} />}
+          ListFooterComponent={<View className="h-20" />}
+          ListEmptyComponent={
+            <View className="flex-1 items-center justify-center">
+              <Text className="font-Jakarta text-xl text-general-200">
+                No hay productos disponibles
+              </Text>
+            </View>
+          }
+        />
+      </View>
+    ),
+    dinners: () => (
+      <View className="mt-6">
+        <FlatList
+          data={(productsQuery.data || []).filter(
+            (product: any) => product.group === "dinners",
+          )}
+          renderItem={({ item }) => <ProductCard item={item} />}
+          ListFooterComponent={<View className="h-20" />}
+          ListEmptyComponent={
+            <View className="flex-1 items-center justify-center">
+              <Text className="font-Jakarta text-xl text-general-200">
+                No hay productos disponibles
+              </Text>
+            </View>
+          }
+        />
+      </View>
+    ),
+    desserts: () => (
+      <View className="mt-6">
+        <FlatList
+          data={(productsQuery.data || []).filter(
+            (product: any) => product.group === "desserts",
+          )}
+          renderItem={({ item }) => <ProductCard item={item} />}
+          ListFooterComponent={<View className="h-20" />}
+          ListEmptyComponent={
+            <View className="flex-1 items-center justify-center">
+              <Text className="font-Jakarta text-xl text-general-200">
+                No hay productos disponibles
+              </Text>
+            </View>
+          }
+        />
+      </View>
+    ),
+    drinks: () => (
+      <View className="mt-6">
+        <FlatList
+          data={(productsQuery.data || []).filter(
+            (product: any) => product.group === "drinks",
+          )}
+          renderItem={({ item }) => <ProductCard item={item} />}
+          ListFooterComponent={<View className="h-20" />}
+          ListEmptyComponent={
+            <View className="flex-1 items-center justify-center">
+              <Text className="font-Jakarta text-xl text-general-200">
+                No hay productos disponibles
+              </Text>
+            </View>
+          }
+        />
+      </View>
+    ),
+    others: () => (
+      <View className="mt-6">
+        <FlatList
+          data={(productsQuery.data || []).filter(
+            (product: any) => product.group === "others",
+          )}
+          renderItem={({ item }) => <ProductCard item={item} />}
+          ListFooterComponent={<View className="h-20" />}
+          ListEmptyComponent={
+            <View className="flex-1 items-center justify-center">
+              <Text className="font-Jakarta text-xl text-general-200">
+                No hay productos disponibles
+              </Text>
+            </View>
+          }
+        />
+      </View>
+    ),
+  });
 
   return (
     <View className="flex-1 items-center bg-general-500 relative">
@@ -52,10 +260,11 @@ const RestaurantScreen = () => {
       </View>
 
       <View className="flex-1 w-full px-7 mb-7">
-        <FlatList
-          data={productsQuery.data || []}
-          renderItem={({ item }) => <ProductCard item={item} />}
-          ListFooterComponent={<View className="h-20" />}
+        <TabView
+          navigationState={{ index, routes }}
+          renderScene={renderScene}
+          onIndexChange={setIndex}
+          renderTabBar={(props) => <CustomTabBar {...props} />}
         />
       </View>
     </View>

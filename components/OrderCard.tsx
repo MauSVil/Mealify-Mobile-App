@@ -8,6 +8,7 @@ const OrderCard = (props: { order: any }) => {
 
   return (
     <TouchableOpacity
+      key={order.id}
       className="mb-4 bg-neutral-100 rounded-md flex-row flex gap-3 justify-between"
       onPress={() => router.push(`/(root)/(map-followup)/${order.id}`)}
     >

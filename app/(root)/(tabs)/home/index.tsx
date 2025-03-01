@@ -3,6 +3,7 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   Pressable,
+  RefreshControl,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -137,6 +138,12 @@ const Home = () => {
           paddingBottom: 100,
         }}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={restaurantsQuery.isRefetching}
+            onRefresh={() => restaurantsQuery.refetch()}
+          />
+        }
       >
         <RestaurantsFlatList
           title="Para ti"

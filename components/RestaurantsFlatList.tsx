@@ -1,7 +1,6 @@
-import { Text, FlatList, View, TouchableOpacity, Image } from "react-native";
+import { Text, FlatList, View, TouchableOpacity } from "react-native";
 import React from "react";
 import RestaurantCard from "./RestaurantCard";
-import { icons } from "@/constants";
 import { Ionicons } from "@expo/vector-icons";
 
 const RestaurantsFlatList = ({
@@ -30,7 +29,16 @@ const RestaurantsFlatList = ({
   }
 
   if (!restaurants || restaurants.length === 0) {
-    return null;
+    return (
+      <>
+        <Text className="mx-5 font-JakartaBold text-xl mb-4">{title}</Text>
+        <View className="w-full mt-4">
+          <Text className="text-center text-lg text-gray-500">
+            No se encontraron restaurantes
+          </Text>
+        </View>
+      </>
+    );
   }
 
   return (

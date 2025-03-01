@@ -31,6 +31,11 @@ const OrdersScreen = () => {
             onRefresh={() => ordersQuery.refetch()}
           />
         }
+        ListEmptyComponent={
+          <View className="flex-1 justify-center items-center">
+            <Text className="text-lg text-gray-500">No hay ordenes</Text>
+          </View>
+        }
       />
     );
   }, [ordersQuery.isLoading, ordersQuery.isRefetching]);
