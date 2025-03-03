@@ -38,7 +38,7 @@ const ProcessingOrderScreen = () => {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <ActivityIndicator size={24} color="#000" />
-      <Text>Estamos procesando tu orden...</Text>
+      <Text className="text-center text-gray-600">Procesando orden...</Text>
     </View>
   );
 };

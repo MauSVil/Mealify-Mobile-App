@@ -113,6 +113,9 @@ export const useMap = ({
   };
 
   useEffect(() => {
+    if (data?.status === "cancelled_by_user") {
+      setLoading(false);
+    }
     if (
       data?.status !== "pending" &&
       data?.status !== "restaurant_delayed" &&

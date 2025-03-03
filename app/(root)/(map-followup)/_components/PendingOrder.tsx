@@ -6,8 +6,20 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
+import { useOrder } from "../_hooks/useOrder";
+import { router } from "expo-router";
 
 const PendingOrder = ({ data }: { data: any }) => {
+  const { orderMutation } = useOrder(data?.id);
+
+  const onClick = async () => {
+    await orderMutation.mutateAsync({
+      id: data?.id,
+      status: "cancelled_by_user",
+    });
+    router.replace("/orders");
+  };
+
   return (
     <>
       <View className="flex flex-row justify-between items-center">
@@ -34,7 +46,10 @@ const PendingOrder = ({ data }: { data: any }) => {
           className="flex-1 h-24 rounded-md opacity-85"
         />
       </View>
-      <TouchableOpacity className="bg-red-500 p-3 rounded-2xl items-center justify-center mt-8">
+      <TouchableOpacity
+        className="bg-red-500 p-3 rounded-2xl items-center justify-center mt-8"
+        onPress={onClick}
+      >
         <Text className="text-white text-base font-JakartaBold">
           Cancelar pedido
         </Text>

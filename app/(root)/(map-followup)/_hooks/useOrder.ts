@@ -1,5 +1,5 @@
 import { useApi } from "@/lib/api";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useOrder = (id: number | string) => {
   const api = useApi();
@@ -20,8 +20,18 @@ export const useOrder = (id: number | string) => {
     },
   });
 
+  const orderMutation = useMutation({
+    mutationKey: ["order", id],
+    mutationFn: async (data: any) => {
+      const resp = await api.put("/orders", data);
+      return resp.data;
+    },
+  });
+
   return {
     orderQuery,
     candidatesQuery,
+
+    orderMutation,
   };
 };

@@ -102,6 +102,22 @@ const MapFollowUp = () => {
     );
   }
 
+  if (orderQuery.data?.status === "cancelled_by_user") {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <Text className="text-center text-gray-600">
+          El pedido fue cancelado por el usuario
+        </Text>
+        <TouchableOpacity
+          className="mt-4"
+          onPress={() => router.push("/orders")}
+        >
+          <Text className="text-blue-500">Volver a la lista de pedidos</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   const renderBottomSheetContent = (status: string) => {
     const components: Record<string, React.ReactElement | null> = {
       pending: <PendingOrder data={orderQuery.data} />,
